@@ -16,6 +16,7 @@
 #include <TTree.h>
 
 #include "DataFormats/TallinnL1PFTaus/interface/TallinnL1PFTau.h"
+#include "DataFormats/TallinnL1PFTaus/interface/TallinnL1PFTauFwd.h"
 #include "DataFormats/VertexReco/interface/Vertex.h"  
 #include "DataFormats/L1Trigger/interface/Tau.h" 
 #include "SimDataFormats/GeneratorProducts/interface/GenEventInfoProduct.h"
@@ -186,7 +187,7 @@ TallinnL1PFTauAnalyzer::analyze(const edm::Event& iEvent, const edm::EventSetup&
      l1PFTauPhi_.push_back(l1PFTau.phi());
      l1PFTauCharge_.push_back(l1PFTau.charge());
      l1PFTauType_.push_back(l1PFTau.tauType());
-     l1PFTauIso_.push_back(l1PFTau.chargedIso());
+     l1PFTauIso_.push_back(l1PFTau.sumChargedIso());
      l1PFTauTightIso_.push_back(l1PFTau.passTightIso());
      l1PFTauMediumIso_.push_back(l1PFTau.passMediumIso());
      l1PFTauLooseIso_.push_back(l1PFTau.passLooseIso());
@@ -197,7 +198,7 @@ TallinnL1PFTauAnalyzer::analyze(const edm::Event& iEvent, const edm::EventSetup&
      hist_l1PFTauPhi_->Fill(l1PFTau.phi());
 
      if(debug_){
-       std::cout<<" L1PFTau pt "<<l1PFTau.pt()<<" eta "<< l1PFTau.eta()<<" phi "<< l1PFTau.phi()<<" charge "<< l1PFTau.charge()<<" Type "<< l1PFTau.tauType()<<" chargedIso "<< l1PFTau.chargedIso()<<std::endl;
+       std::cout<<" L1PFTau pt "<<l1PFTau.pt()<<" eta "<< l1PFTau.eta()<<" phi "<< l1PFTau.phi()<<" charge "<< l1PFTau.charge()<<" Type "<< l1PFTau.tauType()<<" sumChargedIso "<< l1PFTau.sumChargedIso()<<std::endl;
      }
    }
 
