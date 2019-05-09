@@ -153,6 +153,8 @@ TallinnL1PFTauAnalyzer::analyze(const edm::Event& iEvent, const edm::EventSetup&
    iEvent.getByToken(recoTauToken_,     recoTauHandle);
 
    for(auto recoTau : *recoTauHandle){
+     if (fabs(recoTau->eta())>1.5)
+	      continue;
      recoTauPt_.push_back(recoTau->pt());
      recoTauEta_.push_back(recoTau->eta());
      recoTauPhi_.push_back(recoTau->phi());
