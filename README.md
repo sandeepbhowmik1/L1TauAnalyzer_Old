@@ -23,11 +23,13 @@ cp /home/veelken/public/classes.h $CMSSW_BASE/src/DataFormats/Phase2L1ParticleFl
 
 cp /home/veelken/public/classes_def.xml $CMSSW_BASE/src/DataFormats/Phase2L1ParticleFlow/src
 
+cp /home/veelken/public/PFCandidateFwd.h $CMSSW_BASE/src/DataFormats/Phase2L1ParticleFlow/interface
+
 git clone https://github.com/HEP-KBFI/l1trigger-phase2l1pftaus $CMSSW_BASE/src/L1Trigger/TallinnL1PFTaus
 
 git clone https://github.com/HEP-KBFI/dataformats-phase2l1pftaus $CMSSW_BASE/src/DataFormats/TallinnL1PFTaus
 
-git clone https://github.com/sandeepbhowmik1/L1TauAnalyzer/L1PFTauAnalyzer
+git clone https://github.com/sandeepbhowmik1/L1TauAnalyzer
 
 scram b -j 8
 
@@ -36,9 +38,14 @@ scram b -j 8
 
 cd L1TauAnalyzer/L1PFTauAnalyzer/test
 
-cmsRun test_TallinnL1PFTauAnalyzer.py
-
 # To make plots
 
-cd L1TauAnalyzer/MakePlot
+cd L1TauAnalyzer/L1PFTauAnalyzer
+
+python commandsToMakePlots.py
+
+Modify 2 lines to get plots in L1TauAnalyzer/L1PFTauAnalyzer/plots/
+
+pathNTuple_TallinnL1PFTau = '/home/sbhowmik/NTuple_Phase2/TallinnL1PFTau'
+pathNTuple_L1PFTau = '/home/sbhowmik/NTuple_Phase2/L1PFTau'
 
