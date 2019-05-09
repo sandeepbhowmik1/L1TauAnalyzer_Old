@@ -47,5 +47,6 @@ python commandsToMakePlots.py
 Modify 2 lines to get plots in L1TauAnalyzer/L1PFTauAnalyzer/plots/
 
 pathNTuple_TallinnL1PFTau = '/home/sbhowmik/NTuple_Phase2/TallinnL1PFTau'
+
 pathNTuple_L1PFTau = '/home/sbhowmik/NTuple_Phase2/L1PFTau'
 
