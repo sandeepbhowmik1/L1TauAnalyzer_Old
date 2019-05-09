@@ -32,7 +32,7 @@ def run_cmd(command):
   stdout, stderr = p.communicate()
   return stdout
 
-'''
+
 # -----------Create file list of crab output root files ------------
 
 run_cmd('rm %s' % "*list")
@@ -96,7 +96,7 @@ fileName_In_L1PFTau = os.path.join(pathNTuple_L1PFTau, "NTuple_test_L1PFTauAnaly
 treeName_In_L1PFTau = 'L1PFTauAnalyzer/L1PFTauAnalyzer'
 fileName_Out_L1PFTau = os.path.join(pathNTuple_L1PFTau, "NTuple_test_L1PFTauAnalyzer_VBFHToTauTau_"+"forEfficiency_"+tagPlot+".root")
 run_cmd('python %s %s %s %s' % (scriptFile, fileName_In_L1PFTau, treeName_In_L1PFTau, fileName_Out_L1PFTau))
-'''
+
 
 # -------------- Plot efficiency turn-on -------------------------------
 
@@ -126,7 +126,7 @@ scriptPlot_Efficiency = os.path.join(workingDir, "script/efficiencyPlot/macro", 
 fileName_Out_Efficiency = os.path.join(workingDir, "script/efficiencyPlot/plots", "plot_compare_Efficiency_L1PFTau_vs_TallinnL1PFTau_Pt_"+tagPlot) 
 run_cmd('python %s %s %s %s' % (scriptPlot_Efficiency, fileName_Out_TallinnL1PFTau, fileName_Out_L1PFTau, fileName_Out_Efficiency)) 
 
-'''
+
 # -----------Convert root tree for resolution plot ------------  
 
 scriptFile = os.path.join(workingDir, "script/resolutionPlot", "convertTreeFor_ResolutionPlot.py")
@@ -171,5 +171,5 @@ run_cmd('cp %s %s' % (fileName_Out_Efficiency+".png", pathPlot))
 run_cmd('cp %s %s' % (fileName_Out_Resolution+"_Et.png", pathPlot))
 run_cmd('cp %s %s' % (fileName_Out_Resolution+"_Eta.png", pathPlot))
 run_cmd('cp %s %s' % (fileName_Out_Resolution+"_Phi.png", pathPlot))
-'''
+
 
