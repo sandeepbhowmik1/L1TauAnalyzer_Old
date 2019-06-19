@@ -34,7 +34,8 @@ class EfficiencyPlot:
         #self.xTitle = "#eta^{#tau, offline}"
         self.legendPosition = (0.1,0.2,0.85,0.6)
         self.setPlotStyle()
-        self.triggerName = args.get("TriggerName", "")
+        self.workingPoint = args.get("WorkingPoint", "")
+        self.extraText = "E_{T}^{#tau, L1} > 30 GeV"
 
     def addEfficiency(self, turnon):
         self.turnons.append(turnon)
@@ -55,7 +56,8 @@ class EfficiencyPlot:
         xpos  = 0.16
         ypos  = 0.95
         #CMSbox       = ROOT.TLatex  (xpos, ypos         , "#bf{CMS} #it{Preliminary}   2018 data")
-        CMSbox       = ROOT.TLatex  (xpos, ypos         , "#bf{CMS}  L1PF Tau              MC (Phase2) ") 
+        #CMSbox       = ROOT.TLatex  (xpos, ypos         , "#bf{CMS}  L1PF Tau              MC (Phase2) ") 
+        CMSbox       = ROOT.TLatex  (xpos, ypos, "#bf{CMS} #it{Preliminary}      L1PF Tau      MC (Phase2) ")
         CMSbox.SetNDC()
         CMSbox.SetTextSize(cmsTextSize)
         CMSbox.SetTextFont(cmsTextFont)
@@ -69,19 +71,21 @@ class EfficiencyPlot:
         #extraTextBox = ROOT.TLatex  (0.55, 0.33, "Isolated, E_{T}^{#tau, L1} > 30 GeV")
         #extraTextBox = ROOT.TLatex  (0.55, 0.33, "#splitline{p_{T}^{#tau, offline} > 40 GeV}{Inclusive, E_{T}^{#tau, L1} > 38 GeV}")
         #extraTextBox = ROOT.TLatex  (0.55, 0.33, "#splitline{p_{T}^{#tau, offline} > 40 GeV}{Isolated, E_{T}^{#tau, L1} > 38 GeV}")
-        extraTextBox = ROOT.TLatex  (0.55, 0.33, "E_{T}^{#tau, L1} > 30 GeV") 
+        extraTextBox = ROOT.TLatex  (0.65, 0.3, "E_{T}^{#tau, L1} > 30 GeV") 
+        extraTextBox = ROOT.TLatex  (0.65, 0.2, self.extraText)
         extraTextBox.SetNDC()
         extraTextBox.SetTextSize(extraTextSize)
         extraTextBox.SetTextFont(extraTextFont)
         extraTextBox.SetTextColor(ROOT.kBlack)
         extraTextBox.SetTextAlign(13)
 
-        triggerNameBox = ROOT.TLatex(0.15, 0.95, self.triggerName)
-        triggerNameBox.SetNDC()
-        triggerNameBox.SetTextFont(42)
-        triggerNameBox.SetTextSize(extraTextSize)
-        triggerNameBox.SetTextColor(ROOT.kBlack)
-        triggerNameBox.SetTextAlign(11)
+        #workingPointBox = ROOT.TLatex(0.65, 0.25, self.workingPoint)
+        workingPointBox = ROOT.TLatex(0.25, 0.25, self.workingPoint)
+        workingPointBox.SetNDC()
+        workingPointBox.SetTextFont(42)
+        workingPointBox.SetTextSize(extraTextSize)
+        workingPointBox.SetTextColor(ROOT.kBlack)
+        workingPointBox.SetTextAlign(11)
 
         lumi = "30.34 fb^{-1} (13 TeV)"
         lumi = "57 fb^{-1} (13 TeV)"
@@ -112,8 +116,9 @@ class EfficiencyPlot:
             fit.Draw("l same")
             legend.AddEntry(histo, turnon.legend, "pe")
             legend.Draw()
+        workingPointBox.Draw()
         CMSbox.Draw()
-        extraTextBox.Draw()
+        #extraTextBox.Draw()
         #lumibox.Draw()
         canvas.Print(self.name+".pdf", "pdf")
         canvas.Print(self.name+".png", "png")
@@ -127,9 +132,9 @@ class EfficiencyPlot:
         ROOT.gStyle.SetOptTitle(0)
         ROOT.gStyle.SetFrameLineWidth(1)
         ROOT.gStyle.SetPadBottomMargin(0.13)
-        ROOT.gStyle.SetPadLeftMargin(0.15)
-        ROOT.gStyle.SetPadTopMargin(0.06)
-        ROOT.gStyle.SetPadRightMargin(0.05)
+        ROOT.gStyle.SetPadLeftMargin(0.16)
+        #ROOT.gStyle.SetPadTopMargin(0.06)
+        #ROOT.gStyle.SetPadRightMargin(0.05)
 
         ROOT.gStyle.SetLabelFont(42,"X")
         ROOT.gStyle.SetLabelFont(42,"Y")

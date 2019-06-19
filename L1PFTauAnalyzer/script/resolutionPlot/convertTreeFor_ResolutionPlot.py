@@ -67,18 +67,21 @@ for ev in range (0, nentries):
                 tauPhi[0] = treeIn.recoTauPhi[i]
                 Nvtx[0] = treeIn.Nvtx
 
-                l1tVLooseIso[0] = 1 #if treeIn.l1PFTauVLooseIso[k] else 0
-                l1tLooseIso[0] = 1 #if treeIn.l1PFTauLooseIso[k] else 0
-                l1tMediumIso[0] = 1 #if treeIn.l1PFTauMediumIso[k] else 0
-                l1tTightIso[0] = 1 #if treeIn.l1PFTauTightIso[k] else 0
+                l1tVLooseIso[0] = 1 if treeIn.l1PFTauVLooseIso[k] else 0
+                l1tLooseIso[0] = 1 if treeIn.l1PFTauLooseIso[k] else 0
+                l1tMediumIso[0] = 1 if treeIn.l1PFTauMediumIso[k] else 0
+                l1tTightIso[0] = 1 if treeIn.l1PFTauTightIso[k] else 0
                 l1tPt[0] = treeIn.l1PFTauPt[k]
                 l1tEta[0] = treeIn.l1PFTauEta[k]
                 l1tPhi[0] = treeIn.l1PFTauPhi[k]
+
+                treeOut.Fill()
+
                 break
 
-        print " ", i, " ", tauPt[0], " ", tauEta[0], " ", tauPhi[0], " ", Nvtx[0], " ", l1tVLooseIso[0], " ", l1tLooseIso[0], " ", l1tMediumIso[0], " ", l1tTightIso[0], " ", l1tPt[0]
+            #print " ", i, " ", tauPt[0], " ", tauEta[0], " ", tauPhi[0], " ", Nvtx[0], " ", l1tVLooseIso[0], " ", l1tLooseIso[0], " ", l1tMediumIso[0], " ", l1tTightIso[0], " ", l1tPt[0]
  
-    treeOut.Fill()
+            #treeOut.Fill()
 
 treeOut.Write()
 fileOut.Close()

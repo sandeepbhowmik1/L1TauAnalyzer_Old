@@ -48,6 +48,9 @@ SetLucaStyle()
 fileIn_TallinnL1PFTau = TFile (fileName_In_TallinnL1PFTau)
 fileIn_L1PFTau = TFile (fileName_In_L1PFTau)
 
+algoNames = ["Single", "Double"]
+workingPointNames = ["TightIso", "MediumIso", "LooseIso", "VLooseIso"]
+
 c1 = TCanvas ("c1", "c1", 800, 800)
 c1.SetLogy()
 #c1.SetLogx()
@@ -69,6 +72,7 @@ CMSbox.SetTextSize(cmsTextSize)
 CMSbox.SetTextFont(cmsTextFont)
 CMSbox.SetTextColor(kBlack)
 CMSbox.SetTextAlign(13)
+
 extraTextSize   = 0.8*cmsTextSize 
 extraTextFont   = 52
 extraTextBox = ROOT.TLatex  (0.65, 0.45, "p_{T}^{#tau, offline} > 20 GeV")
@@ -95,41 +99,50 @@ titlebox.SetTextSize(extraTextSize)
 titlebox.SetTextFont(42)
 titlebox.SetTextColor(kBlack)
 
-hist_TallinnL1PFTau = fileIn_TallinnL1PFTau.Get("L1PFTau_Rate")
-hist_TallinnL1PFTau.SetLineColor(kBlue)
-hist_TallinnL1PFTau.SetMarkerColor(kBlue)
-hist_TallinnL1PFTau.SetMarkerSize(0.8)
-hist_TallinnL1PFTau.SetMarkerStyle(8)
-hist_TallinnL1PFTau.SetMinimum(1000)
-hist_TallinnL1PFTau.SetMaximum(100000000)
-hist_TallinnL1PFTau.SetTitle(";E_{T}^{#tau, L1} (GeV) ; Rate (Hz)")
-hist_TallinnL1PFTau.GetXaxis().SetTitleOffset(0.9)
-leg.AddEntry(hist_TallinnL1PFTau, "TallinnL1PFTau",  "lp")
-hist_TallinnL1PFTau.Draw("p e")
+first = True
 
-hist_L1PFTau = fileIn_L1PFTau.Get("L1PFTau_Rate")
-hist_L1PFTau.SetLineColor(kRed)
-hist_L1PFTau.SetMarkerColor(kRed)
-hist_L1PFTau.SetMarkerSize(0.8)
-hist_L1PFTau.SetMarkerStyle(8)
-hist_L1PFTau.SetMinimum(1000)
-hist_L1PFTau.SetTitle(";E_{T}^{#tau, L1} (GeV) ; Rate (Hz)")
-hist_L1PFTau.GetXaxis().SetTitleOffset(0.9)
-leg.AddEntry(hist_L1PFTau, "L1PFTau", "lp")
-hist_L1PFTau.Draw("p e same")
+for algoName in algoNames:
 
+    for workingPointName in workingPointNames:
 
-leg.Draw()
-#lumibox.Draw()
-CMSbox.Draw()
-#extraTextBox.Draw()
-#titlebox.Draw()    
-
-c1.Print(fileName_Out+".pdf", "pdf")
-c1.Print(fileName_Out+".png", "png")
-c1.Print(fileName_Out+".root", "root")
-
-
-#raw_input()
+        hist_TallinnL1PFTau = fileIn_TallinnL1PFTau.Get("%s_L1PFTau_Rate_%s" % (algoName,workingPointName))
+        hist_TallinnL1PFTau.SetLineColor(kBlue)
+        hist_TallinnL1PFTau.SetMarkerColor(kBlue)
+        hist_TallinnL1PFTau.SetMarkerSize(0.8)
+        hist_TallinnL1PFTau.SetMarkerStyle(8)
+        hist_TallinnL1PFTau.SetMinimum(100)
+        hist_TallinnL1PFTau.SetMaximum(100000000)
+        hist_TallinnL1PFTau.SetAxisRange(0, 100)
+        hist_TallinnL1PFTau.SetTitle(";E_{T}^{#tau, L1} (GeV) ; Rate (Hz)")
+        hist_TallinnL1PFTau.GetXaxis().SetTitleOffset(0.9)
+        hist_TallinnL1PFTau.Draw("p e")
+    
+        hist_L1PFTau = fileIn_L1PFTau.Get("%s_L1PFTau_Rate_%s" % (algoName,workingPointName))
+        hist_L1PFTau.SetLineColor(kRed)
+        hist_L1PFTau.SetMarkerColor(kRed)
+        hist_L1PFTau.SetMarkerSize(0.8)
+        hist_L1PFTau.SetMarkerStyle(8)
+        hist_L1PFTau.SetMinimum(100)
+        hist_L1PFTau.SetAxisRange(0, 100)
+        hist_L1PFTau.SetTitle(";E_{T}^{#tau, L1} (GeV) ; Rate (Hz)")
+        hist_L1PFTau.GetXaxis().SetTitleOffset(0.9)
+        hist_L1PFTau.Draw("p e same")
+        
+        if first:
+            first = False
+            leg.AddEntry(hist_TallinnL1PFTau,  "HPS@L1 (Tallinn)",  "lp")
+            leg.AddEntry(hist_L1PFTau, "L1PFTau", "lp")
+            
+        extraTextBox.SetText(0.6, 0.6, algoName + " Tau " + workingPointName)
+            
+        leg.Draw()
+        #lumibox.Draw()
+        CMSbox.Draw()
+        extraTextBox.Draw()
+        #titlebox.Draw()    
+            
+        c1.Print(fileName_Out + "_" + algoName + "_" + workingPointName + ".pdf", "pdf")
+        c1.Print(fileName_Out + "_" + algoName + "_" + workingPointName + ".png", "png")
+        c1.Print(fileName_Out + "_" + algoName + "_" + workingPointName + ".root", "root")
 
 

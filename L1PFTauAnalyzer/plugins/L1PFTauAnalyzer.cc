@@ -56,6 +56,11 @@ private:
   std::vector<Bool_t> l1PFTauMediumIso_;
   std::vector<Bool_t> l1PFTauLooseIso_;
   std::vector<Bool_t> l1PFTauVLooseIso_;
+  std::vector<Bool_t> l1PFTauTightRelIso_;
+  std::vector<Bool_t> l1PFTauMediumRelIso_;
+  std::vector<Bool_t> l1PFTauLooseRelIso_;
+  std::vector<Bool_t> l1PFTauVLooseRelIso_;
+  std::vector<float> l1PFTauZ_;
   int Nvtx_;
   std::vector<Bool_t> isMatched_;
 
@@ -188,11 +193,52 @@ L1PFTauAnalyzer::analyze(const edm::Event& iEvent, const edm::EventSetup& iSetup
      l1PFTauPhi_.push_back(l1PFTau.phi());
      l1PFTauCharge_.push_back(l1PFTau.charge());
      l1PFTauType_.push_back(l1PFTau.tauType());
-     //     l1PFTauIso_.push_back(l1PFTau.sumChargedIso());
+     l1PFTauIso_.push_back(l1PFTau.chargedIso());
      l1PFTauTightIso_.push_back(l1PFTau.passTightIso());
      l1PFTauMediumIso_.push_back(l1PFTau.passMediumIso());
      l1PFTauLooseIso_.push_back(l1PFTau.passLooseIso());
      l1PFTauVLooseIso_.push_back(l1PFTau.passVLooseIso());
+
+     if(l1PFTau.pt()!=0)
+       {
+         if(l1PFTau.chargedIso()/l1PFTau.pt() < 0.40)
+           {
+             l1PFTauVLooseRelIso_.push_back(true);
+           }
+         else
+           {
+             l1PFTauVLooseRelIso_.push_back(false);
+           }
+         if(l1PFTau.chargedIso()/l1PFTau.pt() < 0.20)
+           {
+             l1PFTauLooseRelIso_.push_back(true);
+           }
+         else
+           {
+             l1PFTauLooseRelIso_.push_back(false);
+           }
+         if(l1PFTau.chargedIso()/l1PFTau.pt() < 0.10)
+           {
+             l1PFTauMediumRelIso_.push_back(true);
+           }
+         else
+           {
+             l1PFTauMediumRelIso_.push_back(false);
+           }
+         if(l1PFTau.chargedIso()/l1PFTau.pt() < 0.05)
+           {
+             l1PFTauTightRelIso_.push_back(true);
+           }
+         else
+           {
+             l1PFTauTightRelIso_.push_back(false);
+           }
+
+	 //std::cout<<"chargedIso "<< l1PFTau.chargedIso()<<" Pt "<<l1PFTau.pt()<<" product "<<l1PFTau.chargedIso()/l1PFTau.pt()<< " Tight "<<l1PFTau.passTightIso()<<" Medium "<<l1PFTau.passMediumIso()<<" Loose "<<l1PFTau.passLooseIso()<<" VLoose "<<l1PFTau.passVLooseIso()<<std::endl;
+       }
+
+     double z = 0;
+     l1PFTauZ_.push_back(z);
 
      hist_l1PFTauPt_->Fill(l1PFTau.pt());
      hist_l1PFTauEta_->Fill(l1PFTau.eta());
@@ -226,6 +272,11 @@ void L1PFTauAnalyzer::Initialize() {
   l1PFTauMediumIso_ .clear();
   l1PFTauLooseIso_ .clear();
   l1PFTauVLooseIso_ .clear();
+  l1PFTauTightRelIso_ .clear();
+  l1PFTauMediumRelIso_ .clear();
+  l1PFTauLooseRelIso_ .clear();
+  l1PFTauVLooseRelIso_ .clear();
+  l1PFTauZ_ .clear();
   Nvtx_ = 0;
   isMatched_ .clear();
 }
@@ -254,6 +305,11 @@ L1PFTauAnalyzer::beginJob()
   tree_ -> Branch("l1PFTauMediumIso", &l1PFTauMediumIso_);
   tree_ -> Branch("l1PFTauLooseIso", &l1PFTauLooseIso_);
   tree_ -> Branch("l1PFTauVLooseIso", &l1PFTauVLooseIso_);
+  tree_ -> Branch("l1PFTauTightRelIso", &l1PFTauTightRelIso_);
+  tree_ -> Branch("l1PFTauMediumRelIso", &l1PFTauMediumRelIso_);
+  tree_ -> Branch("l1PFTauLooseRelIso", &l1PFTauLooseRelIso_);
+  tree_ -> Branch("l1PFTauVLooseRelIso", &l1PFTauVLooseRelIso_);
+  tree_ -> Branch("l1PFTauZ", &l1PFTauZ_);
   tree_ -> Branch("Nvtx", &Nvtx_, "Nvtx/I");
   tree_ -> Branch("isMatched", &isMatched_);
 

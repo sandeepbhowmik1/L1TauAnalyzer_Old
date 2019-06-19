@@ -145,7 +145,7 @@ for varName in varNames:
 
     if first:
         first = False
-        leg.AddEntry(hist_TallinnL1PFTau, "TallinnL1PFTau",  "lp")        
+        leg.AddEntry(hist_TallinnL1PFTau, "HPS@L1 (Tallinn)",  "lp")        
         leg.AddEntry(hist_L1PFTau, "L1PFTau", "lp")        
 
     line = TLine(1,0,1,1.15*mm)

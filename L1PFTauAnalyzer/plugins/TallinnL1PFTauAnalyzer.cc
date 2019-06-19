@@ -57,6 +57,11 @@ private:
   std::vector<Bool_t> l1PFTauMediumIso_;
   std::vector<Bool_t> l1PFTauLooseIso_;
   std::vector<Bool_t> l1PFTauVLooseIso_;
+  std::vector<Bool_t> l1PFTauTightRelIso_;
+  std::vector<Bool_t> l1PFTauMediumRelIso_;
+  std::vector<Bool_t> l1PFTauLooseRelIso_;
+  std::vector<Bool_t> l1PFTauVLooseRelIso_;
+  std::vector<float> l1PFTauZ_;
   int Nvtx_;
   std::vector<Bool_t> isMatched_;
 
@@ -88,6 +93,7 @@ TallinnL1PFTauAnalyzer::TallinnL1PFTauAnalyzer(const edm::ParameterSet& iConfig)
  :
   debug_          (iConfig.getUntrackedParameter<bool>("debug", false)),
   l1PFTauToken_   (consumes<l1t::TallinnL1PFTauCollection>          (iConfig.getParameter<edm::InputTag>("l1PFTauToken"))),
+  //l1PFTauToken_   (consumes<std::vector<l1t::TallinnL1PFTau>>       (iConfig.getParameter<edm::InputTag>("l1PFTauToken"))),
   vtxTagToken_    (consumes<std::vector<reco::Vertex>>              (iConfig.getParameter<edm::InputTag>("vtxTagToken"))),
   l1TauToken_     (consumes<l1t::TauBxCollection>                   (iConfig.getParameter<edm::InputTag>("l1TauToken"))),
   genTagToken_    (consumes<GenEventInfoProduct>                    (iConfig.getParameter<edm::InputTag>("genTagToken"))),
@@ -135,6 +141,7 @@ TallinnL1PFTauAnalyzer::analyze(const edm::Event& iEvent, const edm::EventSetup&
    lumi_ = iEvent.luminosityBlock();
 
    edm::Handle<l1t::TallinnL1PFTauCollection>  l1PFTauHandle;
+   //edm::Handle<std::vector<l1t::TallinnL1PFTauCollection>>  l1PFTauHandle;
    iEvent.getByToken(l1PFTauToken_,            l1PFTauHandle);
 
    edm::Handle<std::vector<reco::Vertex> >    vertexes;
@@ -195,6 +202,55 @@ TallinnL1PFTauAnalyzer::analyze(const edm::Event& iEvent, const edm::EventSetup&
      l1PFTauLooseIso_.push_back(l1PFTau.passLooseIso());
      l1PFTauVLooseIso_.push_back(l1PFTau.passVLooseIso());
 
+     if(l1PFTau.pt()!=0)
+       {
+	 if(l1PFTau.sumChargedIso()/l1PFTau.pt() < 0.40)
+	   {
+	     l1PFTauVLooseRelIso_.push_back(true);
+	   }
+	 else
+	   {
+	     l1PFTauVLooseRelIso_.push_back(false);
+	   }
+	 if(l1PFTau.sumChargedIso()/l1PFTau.pt() < 0.20)
+           {
+             l1PFTauLooseRelIso_.push_back(true);
+           }
+         else
+           {
+             l1PFTauLooseRelIso_.push_back(false);
+           }
+	 if(l1PFTau.sumChargedIso()/l1PFTau.pt() < 0.10)
+           {
+             l1PFTauMediumRelIso_.push_back(true);
+           }
+         else
+           {
+             l1PFTauMediumRelIso_.push_back(false);
+           }
+	 if(l1PFTau.sumChargedIso()/l1PFTau.pt() < 0.05)
+           {
+             l1PFTauTightRelIso_.push_back(true);
+           }
+         else
+           {
+             l1PFTauTightRelIso_.push_back(false);
+           }
+
+	 //std::cout<<"sumChargedIso "<< l1PFTau.sumChargedIso()<<" Pt "<<l1PFTau.pt()<<" product "<<l1PFTau.sumChargedIso()/l1PFTau.pt()<< " Tight "<<l1PFTau.passTightRelIso()<<" Medium "<<l1PFTau.passMediumRelIso()<<" Loose "<<l1PFTau.passLooseRelIso()<<" VLoose "<<l1PFTau.passVLooseRelIso()<<std::endl; 
+       }
+
+     if ( l1PFTau.leadChargedPFCand().isNonnull() && l1PFTau.leadChargedPFCand()->pfTrack().isNonnull())
+       {
+         double z = l1PFTau.leadChargedPFCand()->pfTrack()->vertex().z();
+	 l1PFTauZ_.push_back(z);
+       }
+     else 
+       {
+	 double z = 1000;
+	 l1PFTauZ_.push_back(z);
+       }
+
      hist_l1PFTauPt_->Fill(l1PFTau.pt());
      hist_l1PFTauEta_->Fill(l1PFTau.eta());
      hist_l1PFTauPhi_->Fill(l1PFTau.phi());
@@ -227,6 +283,11 @@ void TallinnL1PFTauAnalyzer::Initialize() {
   l1PFTauMediumIso_ .clear();
   l1PFTauLooseIso_ .clear();
   l1PFTauVLooseIso_ .clear();
+  l1PFTauTightRelIso_ .clear();
+  l1PFTauMediumRelIso_ .clear();
+  l1PFTauLooseRelIso_ .clear();
+  l1PFTauVLooseRelIso_ .clear();
+  l1PFTauZ_ .clear();
   Nvtx_ = 0;
   isMatched_ .clear();
 }
@@ -255,6 +316,11 @@ TallinnL1PFTauAnalyzer::beginJob()
   tree_ -> Branch("l1PFTauMediumIso", &l1PFTauMediumIso_);
   tree_ -> Branch("l1PFTauLooseIso", &l1PFTauLooseIso_);
   tree_ -> Branch("l1PFTauVLooseIso", &l1PFTauVLooseIso_);
+  tree_ -> Branch("l1PFTauTightRelIso", &l1PFTauTightRelIso_);
+  tree_ -> Branch("l1PFTauMediumRelIso", &l1PFTauMediumRelIso_);
+  tree_ -> Branch("l1PFTauLooseRelIso", &l1PFTauLooseRelIso_);
+  tree_ -> Branch("l1PFTauVLooseRelIso", &l1PFTauVLooseRelIso_);
+  tree_ -> Branch("l1PFTauZ", &l1PFTauZ_);
   tree_ -> Branch("Nvtx", &Nvtx_, "Nvtx/I");
   tree_ -> Branch("isMatched", &isMatched_);
 

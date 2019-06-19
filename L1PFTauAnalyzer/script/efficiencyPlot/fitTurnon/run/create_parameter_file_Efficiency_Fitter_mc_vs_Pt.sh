@@ -20,20 +20,21 @@ fileOut=${scriptOut}
 echo "OutputFile: ${fileName_Out}" | cat >>$fileOut
 echo "NCPU: 4" | cat >>$fileOut
 
-echo "Turnon.N: 1" | cat >>$fileOut
+echo "Turnon.N: 4" | cat >>$fileOut
 
 for ((i_varName=0; i_varName<=3; i_varName++))
 do
 
     i_var=$((${i_varName}+1))
 
-    echo "Turnon.${i_var}.Name: Phase2_L1PFTau_Pt_${varNameTag}" | cat >>$fileOut
+    echo "Turnon.${i_var}.Name: Phase2_L1PFTau_Pt_${varNameTag[i_varName]}" | cat >>$fileOut
     echo "Turnon.${i_var}.File: ${fileName_In}" | cat >>$fileOut
     echo "Turnon.${i_var}.Tree: L1PFTauAnalyzer" | cat >>$fileOut
     echo "Turnon.${i_var}.XVar: tauPt" | cat >>$fileOut
-    echo "Turnon.${i_var}.Cut: ${varNameTag}" | cat >>$fileOut
+    echo "Turnon.${i_var}.Cut: ${varNameTag[i_varName]}" | cat >>$fileOut
     echo "Turnon.${i_var}.WeightVar: bkgSubW" | cat >>$fileOut
-    echo "Turnon.${i_var}.Binning: 20 25 30 35 40 55 80 200 1000" | cat >>$fileOut
+    #echo "Turnon.${i_var}.Binning: 20 25 30 35 40 55 80 200 1000" | cat >>$fileOut
+    echo "Turnon.${i_var}.Binning: 20 25 30 35 40 45 50 55 60 65 70 75 80 85 90 95 100 120 150 200 300 500 1000" | cat >>$fileOut
     echo "Turnon.${i_var}.FitRange:0 1000" | cat >>$fileOut
     echo "Turnon.${i_var}.CB.Max: 1. 0.9 1." | cat >>$fileOut
     echo "Turnon.${i_var}.CB.Alpha: 3. 0.01 50." | cat >>$fileOut
