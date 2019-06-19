@@ -2,9 +2,9 @@ import os, subprocess, sys
 
 # ----------- *** Start Modification *** -------------------------------------
 
-tagCrab = '20190524'
-tagNTuple = '20190605_3'
-tagPlot = '20190605_3'
+tagCrab = '20190617'
+tagNTuple = '20190617_3'
+tagPlot = '201906017_3'
 
 pathCrab_VBFHToTauTau = '/cms/store/user/sbhowmik/VBFHToTauTau_M125_14TeV_powheg_pythia8_correctedGridpack/PhaseIIMTDTDRAutumn18MiniAOD_'+tagCrab+'/*/*'
 #pathTrees_VBFHToTauTau = '/local/sbhowmik/NTuple_Phase2/L1PFTau/VBFHToTauTau_'+tagCrab
@@ -35,7 +35,7 @@ def run_cmd(command):
 # -----------Create file list of crab output root files ------------
 
 run_cmd('rm %s' % "*list")
-scriptFile = os.path.join(workingDir, "test", "create_fileList_NTuple_20190524.sh")
+scriptFile = os.path.join(workingDir, "test", "create_fileList_NTuple.sh")
 #run_cmd('bash %s %s %s %s %s' % (scriptFile, pathCrab_VBFHToTauTau, pathTrees_VBFHToTauTau, pathCrab_NeutrinoGun, pathTrees_NeutrinoGun))
 run_cmd('bash %s %s %s' % (scriptFile, pathCrab_VBFHToTauTau, pathCrab_NeutrinoGun))
 
