@@ -33,7 +33,7 @@ def run_cmd(command):
 
 
 # -----------Create file list of crab output root files ------------
-'''
+
 run_cmd('rm %s' % "*list")
 scriptFile = os.path.join(workingDir, "test", "create_fileList_NTuple_20190524.sh")
 #run_cmd('bash %s %s %s %s %s' % (scriptFile, pathCrab_VBFHToTauTau, pathTrees_VBFHToTauTau, pathCrab_NeutrinoGun, pathTrees_NeutrinoGun))
@@ -78,7 +78,7 @@ run_cmd('mv %s %s' % ("*.list", testDir))
 run_cmd('mv %s %s' % ("test_*.py", testDir))
 run_cmd('mv %s %s' % ("submit_jobs_cmsRun.sh", testDir))
 run_cmd('rm %s' % "*.log")
-'''
+
 '''
 run_cmd('rm %s' % "*.root")
 cfgFile = os.path.join(workingDir, "test", "test_TallinnL1PFTauAnalyzer_VBFHToTauTau.py")
@@ -95,7 +95,7 @@ run_cmd('mv %s %s' % ("*L1PFTauAnalyzer_*.root", pathNTuple_L1PFTau))
 '''
 
 # -------------- plot rate vs tau pt ----------------------------------
-'''
+
 scriptFile = os.path.join(workingDir, "script/ratePlot/macro", "rate_Calculation.C")
 fileName_In_TallinnL1PFTau = os.path.join(pathNTuple_TallinnL1PFTau, "NTuple_test_TallinnL1PFTauAnalyzer_NeutrinoGun_"+tagNTuple+".root")
 treeName_In_TallinnL1PFTau = 'TallinnL1PFTauAnalyzer/TallinnL1PFTauAnalyzer'
@@ -142,7 +142,7 @@ treeName_In_L1PFTau = 'L1PFTauAnalyzer/L1PFTauAnalyzer'
 fileName_In_txt_L1PFTau = os.path.join(workingDir, "script/ratePlot/results", "hist_rate_L1PFTau_NeutrinoGun_"+tagPlot+".txt")
 fileName_Out_L1PFTau = os.path.join(workingDir, "script/efficiencyPlot/results", "summaryTable_Rate_Efficiency_L1PFTau_"+tagPlot+".txt")
 run_cmd('python %s %s %s %s %s' % (scriptFile, fileName_In_L1PFTau, treeName_In_L1PFTau, fileName_In_txt_L1PFTau, fileName_Out_L1PFTau))
-'''
+
 
 # -------------- Plot efficiency turn-on -------------------------------
 
@@ -173,7 +173,7 @@ fileName_Out_Efficiency = os.path.join(workingDir, "script/efficiencyPlot/plots"
 run_cmd('python %s %s %s %s' % (scriptPlot_Efficiency, fileName_Out_TallinnL1PFTau, fileName_Out_L1PFTau, fileName_Out_Efficiency)) 
 
 # -----------Convert root tree for resolution plot ------------  
-'''
+
 scriptFile = os.path.join(workingDir, "script/resolutionPlot", "convertTreeFor_ResolutionPlot.py")
 fileName_In_TallinnL1PFTau = os.path.join(pathNTuple_TallinnL1PFTau, "NTuple_test_TallinnL1PFTauAnalyzer_VBFHToTauTau_"+tagNTuple+".root")
 treeName_In_TallinnL1PFTau = 'TallinnL1PFTauAnalyzer/TallinnL1PFTauAnalyzer'
@@ -217,6 +217,6 @@ run_cmd('cp %s %s' % (fileName_Out_Resolution+"_Et.png", pathPlot))
 run_cmd('cp %s %s' % (fileName_Out_Resolution+"_Eta.png", pathPlot))
 run_cmd('cp %s %s' % (fileName_Out_Resolution+"_Phi.png", pathPlot))
 
-'''
+
 
 
