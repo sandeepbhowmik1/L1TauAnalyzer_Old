@@ -25,13 +25,13 @@ class genMatchTauFilter : public edm::EDFilter {
 
     private:
         bool filter(edm::Event &, edm::EventSetup const&);
-        EDGetTokenT<pat::TauRefVector>  _tauTag;
+        EDGetTokenT<std::vector<pat::Tau>>  _tauTag;
 };
 
 genMatchTauFilter::genMatchTauFilter(const edm::ParameterSet & iConfig) :
-_tauTag   (consumes<pat::TauRefVector> (iConfig.getParameter<InputTag>("taus")))
+_tauTag   (consumes<std::vector<pat::Tau>> (iConfig.getParameter<InputTag>("taus")))
 {
-    produces <pat::TauRefVector>  ();
+    produces <std::vector<pat::Tau>>  ();
 }
 
 genMatchTauFilter::~genMatchTauFilter()
@@ -39,21 +39,18 @@ genMatchTauFilter::~genMatchTauFilter()
 
 bool genMatchTauFilter::filter(edm::Event & iEvent, edm::EventSetup const& iSetup)
 {
-    std::unique_ptr<pat::TauRefVector>  resultTau  ( new pat::TauRefVector  );
-    Handle<pat::TauRefVector> tauHandle;
+  std::unique_ptr<std::vector<pat::Tau>>  resultTau  ( new std::vector<pat::Tau> );
+    Handle<std::vector<pat::Tau>> tauHandle;
     iEvent.getByToken (_tauTag, tauHandle);
 
-    int goodTaus = 0;
-    for (uint itau = 0; itau < tauHandle->size(); ++itau)
-    {
-        const pat::TauRef tau = (*tauHandle)[itau] ;    
-        if (tau->genJet() && deltaR(tau->p4(), tau->genJet()->p4()) < 0.5 && tau->genJet()->pt() > 8.)
+
+    for(auto tau : *tauHandle){
+	
+      if (tau.genJet() && deltaR(tau.p4(), tau.genJet()->p4()) < 0.5 && tau.genJet()->pt() > 8.)
         {
-            ++goodTaus;
-            resultTau->push_back (tau);
+	  resultTau->push_back (tau);
         }
     }
-    //if (goodTaus == 0) return false;
     
     iEvent.put(std::move(resultTau));
 

@@ -48,7 +48,8 @@ SetLucaStyle()
 fileIn_TallinnL1PFTau = TFile (fileName_In_TallinnL1PFTau)
 fileIn_L1PFTau = TFile (fileName_In_L1PFTau)
 
-algoNames = ["Single", "Double"]
+#tauNumbers = ["Single", "Double"]
+tauNumbers = ["Double", "Single"]
 #workingPointNames = ["TightIso", "MediumIso", "LooseIso", "VLooseIso"]
 workingPointNames = ["VLooseIso", "LooseIso", "MediumIso", "TightIso"]
 workingPoints=["Iso Charge < 0.40#times p_{T}^{#tau,L1}", "Iso Charge < 0.20#times p_{T}^{#tau,L1}", "Iso Charge < 0.10#times p_{T}^{#tau,L1}", "Iso Charge < 0.05#times p_{T}^{#tau,L1}"]
@@ -102,38 +103,55 @@ titlebox.SetTextFont(42)
 titlebox.SetTextColor(kBlack)
 
 first = True
-
-for algoName in algoNames:
+'''
+for tauNumber in tauNumbers:
+    count=0
     for i in range (0, len(workingPointNames)):
-        hist_TallinnL1PFTau = fileIn_TallinnL1PFTau.Get("%s_L1PFTau_Rate_%s" % (algoName,workingPointNames[i]))
-        hist_TallinnL1PFTau.SetLineColor(kBlue)
-        hist_TallinnL1PFTau.SetMarkerColor(kBlue)
-        hist_TallinnL1PFTau.SetMarkerSize(0.8)
+        count+=1
+        hist_TallinnL1PFTau = fileIn_TallinnL1PFTau.Get("%s_L1PFTau_Rate_%s" % (tauNumber,workingPointNames[i]))
+        hist_TallinnL1PFTau.SetLineColor(count)
+        hist_TallinnL1PFTau.SetMarkerColor(count)
+        hist_TallinnL1PFTau.SetMarkerSize(0.4)
         hist_TallinnL1PFTau.SetMarkerStyle(8)
         hist_TallinnL1PFTau.SetMinimum(100)
         hist_TallinnL1PFTau.SetMaximum(100000000)
         hist_TallinnL1PFTau.SetAxisRange(0, 100)
         hist_TallinnL1PFTau.SetTitle(";E_{T}^{#tau, L1} (GeV) ; Rate (Hz)")
         hist_TallinnL1PFTau.GetXaxis().SetTitleOffset(0.9)
-        hist_TallinnL1PFTau.Draw("p e")
-    
-        hist_L1PFTau = fileIn_L1PFTau.Get("%s_L1PFTau_Rate_%s" % (algoName,workingPointNames[i]))
-        hist_L1PFTau.SetLineColor(kRed)
-        hist_L1PFTau.SetMarkerColor(kRed)
-        hist_L1PFTau.SetMarkerSize(0.8)
+        hist_TallinnL1PFTau.Draw("p e same")
+        leg.AddEntry(hist_TallinnL1PFTau,  workingPointNames[i],  "lp")
+
+        extraTextBox.SetText(0.6, 0.6, "#splitline{%s Tau }{HPS@L1}" % tauNumber)
+
+        leg.Draw()
+        #lumibox.Draw()                        
+        CMSbox.Draw()
+        extraTextBox.Draw()
+        #titlebox.Draw() 
+
+    c1.Print(fileName_Out + "_" + tauNumber + "_" + "TallinnL1PFTau" + ".pdf", "pdf")
+    c1.Print(fileName_Out + "_" + tauNumber + "_" + "TallinnL1PFTau" + ".png", "png")
+    c1.Print(fileName_Out + "_" + tauNumber + "_" + "TallinnL1PFTau" + ".root", "root")
+
+'''
+
+for tauNumber in tauNumbers:
+    count=0
+    for i in range (0, len(workingPointNames)):
+        count+=1
+        hist_L1PFTau = fileIn_L1PFTau.Get("%s_L1PFTau_Rate_%s" % (tauNumber,workingPointNames[i]))
+        hist_L1PFTau.SetLineColor(count)
+        hist_L1PFTau.SetMarkerColor(count)
+        hist_L1PFTau.SetMarkerSize(0.4)
         hist_L1PFTau.SetMarkerStyle(8)
         hist_L1PFTau.SetMinimum(100)
         hist_L1PFTau.SetAxisRange(0, 100)
         hist_L1PFTau.SetTitle(";E_{T}^{#tau, L1} (GeV) ; Rate (Hz)")
         hist_L1PFTau.GetXaxis().SetTitleOffset(0.9)
         hist_L1PFTau.Draw("p e same")
-        
-        if first:
-            first = False
-            leg.AddEntry(hist_TallinnL1PFTau,  "HPS@L1 (Tallinn)",  "lp")
-            leg.AddEntry(hist_L1PFTau, "L1PFTau", "lp")
+        leg.AddEntry(hist_L1PFTau, workingPointNames[i], "lp")
             
-        extraTextBox.SetText(0.6, 0.6, "#splitline{%s Tau }{%s}" % (algoName, workingPoints[i]))
+        extraTextBox.SetText(0.6, 0.6, "#splitline{%s Tau }{L1PFTau}" % tauNumber)
             
         leg.Draw()
         #lumibox.Draw()
@@ -141,8 +159,8 @@ for algoName in algoNames:
         extraTextBox.Draw()
         #titlebox.Draw()    
             
-        c1.Print(fileName_Out + "_" + algoName + "_" + workingPointNames[i] + ".pdf", "pdf")
-        c1.Print(fileName_Out + "_" + algoName + "_" + workingPointNames[i] + ".png", "png")
-        c1.Print(fileName_Out + "_" + algoName + "_" + workingPointNames[i] + ".root", "root")
+    c1.Print(fileName_Out + "_" + tauNumber + "_" + "L1PFTau" + ".pdf", "pdf")
+    c1.Print(fileName_Out + "_" + tauNumber + "_" + "L1PFTau" + ".png", "png")
+    c1.Print(fileName_Out + "_" + tauNumber + "_" + "L1PFTau" + ".root", "root")
 
 

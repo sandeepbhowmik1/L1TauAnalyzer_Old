@@ -3,7 +3,7 @@
 
 tagNTuple=$1
 #tagNTuple=20190505
-fileListTag=(VBFHToTauTau  NeutrinoGun)
+fileListTag=(GluGluHToTauTau  NeutrinoGun)
 fileAnalTag=(TallinnL1PFTauAnalyzer L1PFTauAnalyzer)
 
 jobSubmitFile=submit_jobs_cmsRun.sh

@@ -45,7 +45,7 @@ fileIn = TFile.Open(fileName_In)
 treeIn = fileIn.Get(treeName_In)
 fileOut = open(fileName_Out, "w+")
 
-totalNum_RecoTau_Pair = 0
+totalNum_GenTau_Pair = 0
 totalNum_L1PFTau_VLoose_Pair = 0
 totalNum_L1PFTau_Loose_Pair = 0
 totalNum_L1PFTau_Medium_Pair = 0
@@ -57,22 +57,22 @@ for ev in range (0, nentries):
     treeIn.GetEntry(ev)
     if (ev%10000 == 0) : print ev, "/", nentries
 
-    numRecoTau_PassingCut = 0
+    numGenTau_PassingCut = 0
     numL1PFTau_VLoose = 0
     numL1PFTau_Loose = 0
     numL1PFTau_Medium = 0
     numL1PFTau_Tight = 0
 
-    for i in range(0, treeIn.recoTauPt.size()):
-        if abs(treeIn.recoTauEta[i]) > 1.4:
+    for i in range(0, treeIn.genTauPt.size()):
+        if abs(treeIn.genTauEta[i]) > 2.4:
             continue
-        if abs(treeIn.recoTauPt[i]) < 30:
+        if abs(treeIn.genTauPt[i]) < 30:
             continue
 
-        numRecoTau_PassingCut +=1 
+        numGenTau_PassingCut +=1 
 
         for k in range(0, treeIn.l1PFTauPt.size()):
-            DeltaR = math.sqrt((treeIn.recoTauEta[i]-treeIn.l1PFTauEta[k])**2 + (treeIn.recoTauPhi[i]-treeIn.l1PFTauPhi[k])**2)
+            DeltaR = math.sqrt((treeIn.genTauEta[i]-treeIn.l1PFTauEta[k])**2 + (treeIn.genTauPhi[i]-treeIn.l1PFTauPhi[k])**2)
             if DeltaR < 0.5:
                 if treeIn.l1PFTauVLooseRelIso[k] and treeIn.l1PFTauPt[k] > (double)(pt_Threshold_VLooseIso) :
                     numL1PFTau_VLoose +=1
@@ -84,8 +84,8 @@ for ev in range (0, nentries):
                     numL1PFTau_Tight +=1
                 break
 
-    if numRecoTau_PassingCut >=2 :
-        totalNum_RecoTau_Pair +=1
+    if numGenTau_PassingCut >=2 :
+        totalNum_GenTau_Pair +=1
     if numL1PFTau_VLoose >=2 :
         totalNum_L1PFTau_VLoose_Pair +=1
     if numL1PFTau_Loose >=2 :
@@ -94,12 +94,12 @@ for ev in range (0, nentries):
         totalNum_L1PFTau_Medium_Pair +=1
     if numL1PFTau_Tight >=2 :
         totalNum_L1PFTau_Tight_Pair +=1
-print "totalNum_RecoTau_Pair ", totalNum_RecoTau_Pair
+print "totalNum_GenTau_Pair ", totalNum_GenTau_Pair
 
-efficiency_L1PFTau_VLoose = (double)(totalNum_L1PFTau_VLoose_Pair)/(double)(totalNum_RecoTau_Pair)*100
-efficiency_L1PFTau_Loose = (double)(totalNum_L1PFTau_Loose_Pair)/(double)(totalNum_RecoTau_Pair)*100
-efficiency_L1PFTau_Medium = (double)(totalNum_L1PFTau_Medium_Pair)/(double)(totalNum_RecoTau_Pair)*100
-efficiency_L1PFTau_Tight = (double)(totalNum_L1PFTau_Tight_Pair)/(double)(totalNum_RecoTau_Pair)*100
+efficiency_L1PFTau_VLoose = (double)(totalNum_L1PFTau_VLoose_Pair)/(double)(totalNum_GenTau_Pair)*100
+efficiency_L1PFTau_Loose = (double)(totalNum_L1PFTau_Loose_Pair)/(double)(totalNum_GenTau_Pair)*100
+efficiency_L1PFTau_Medium = (double)(totalNum_L1PFTau_Medium_Pair)/(double)(totalNum_GenTau_Pair)*100
+efficiency_L1PFTau_Tight = (double)(totalNum_L1PFTau_Tight_Pair)/(double)(totalNum_GenTau_Pair)*100
 
 
 print "Very Loose ", efficiency_L1PFTau_VLoose
@@ -112,10 +112,10 @@ fileOut.write("\\caption {L1PFTau} \\label{tab:title } \n")
 fileOut.write("\\begin{tabular}{|l|l|c|c|c|}\\hline \n")
 fileOut.write("Working point & charged isolation & Rate [kHz] & L1 $\\tau_{h}$ $p_T$ Threshold & Efficiency \\\\ \n")
 fileOut.write("              &                   &            & GeV             & \%         \\\\ \\hline \n")
-fileOut.write("Very Loose & $<$ 0.40 $\\times p_T$ & %f & %f , %f & %f  \\\\ \\hline \n" % ((double)(rate_Target_VLooseIso) * 4, (double)(pt_Threshold_VLooseIso) , (double)(pt_Threshold_VLooseIso), efficiency_L1PFTau_VLoose) )
-fileOut.write("Loose & $<$ 0.20 $\\times p_T$ & %f & %f , %f & %f  \\\\ \\hline \n" % ((double)(rate_Target_LooseIso) * 4, (double)(pt_Threshold_LooseIso), (double)(pt_Threshold_LooseIso), efficiency_L1PFTau_Loose))
-fileOut.write("Medium & $<$ 0.10 $\\times p_T$ & %f & %f , %f & %f  \\\\ \\hline \n" % ((double)(rate_Target_MediumIso) * 4, (double)(pt_Threshold_MediumIso), (double)(pt_Threshold_MediumIso), efficiency_L1PFTau_Medium))
-fileOut.write("Tight & $<$ 0.05 $\\times p_T$ & %f & %f , %f & %f  \\\\ \\hline \n" % ((double)(rate_Target_TightIso) * 4, (double)(pt_Threshold_TightIso), (double)(pt_Threshold_TightIso), efficiency_L1PFTau_Tight))
+fileOut.write("Very Loose & $<$ 0.40 $\\times p_T$ & %f & %f , %f & %f  \\\\ \\hline \n" % ((double)(rate_Target_VLooseIso) , (double)(pt_Threshold_VLooseIso) , (double)(pt_Threshold_VLooseIso), efficiency_L1PFTau_VLoose) )
+fileOut.write("Loose & $<$ 0.20 $\\times p_T$ & %f & %f , %f & %f  \\\\ \\hline \n" % ((double)(rate_Target_LooseIso) , (double)(pt_Threshold_LooseIso), (double)(pt_Threshold_LooseIso), efficiency_L1PFTau_Loose))
+fileOut.write("Medium & $<$ 0.10 $\\times p_T$ & %f & %f , %f & %f  \\\\ \\hline \n" % ((double)(rate_Target_MediumIso) , (double)(pt_Threshold_MediumIso), (double)(pt_Threshold_MediumIso), efficiency_L1PFTau_Medium))
+fileOut.write("Tight & $<$ 0.05 $\\times p_T$ & %f & %f , %f & %f  \\\\ \\hline \n" % ((double)(rate_Target_TightIso) , (double)(pt_Threshold_TightIso), (double)(pt_Threshold_TightIso), efficiency_L1PFTau_Tight))
 fileOut.write("\\end{tabular} \n")
 fileOut.write("\\end{table} \n")
 

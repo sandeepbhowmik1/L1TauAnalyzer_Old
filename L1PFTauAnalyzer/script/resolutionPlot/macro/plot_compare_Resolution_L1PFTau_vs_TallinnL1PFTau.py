@@ -55,11 +55,17 @@ fileIn_L1PFTau = TFile (fileName_In_L1PFTau)
 varNames = ["Et", "Eta", "Phi"]
 
 titles = {
+    "Et" : ";E_{T}^{#tau, L1} / p_{T}^{#tau, gen}; a.u.",
+    "Eta" : ";#eta^{#tau, L1} - #eta^{#tau, gen}; a.u.",
+    "Phi" : ";#varphi^{#tau, L1} - #varphi^{#tau, gen}; a.u.",
+}
+'''
+titles = {
     "Et" : ";E_{T}^{#tau, L1} / p_{T}^{#tau, offline}; a.u.",
     "Eta" : ";#eta^{#tau, L1} - #eta^{#tau, offline}; a.u.",
     "Phi" : ";#varphi^{#tau, L1} - #varphi^{#tau, offline}; a.u.",
 }
-
+'''
 c1 = TCanvas ("c1", "c1", 800, 800)
 
 leg = TLegend(0.6, 0.65, 0.8, 0.8)

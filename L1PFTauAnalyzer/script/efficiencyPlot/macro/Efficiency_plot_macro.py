@@ -29,7 +29,8 @@ class EfficiencyPlot:
         #self.plotDir = "/home/sbhowmik/Phase2/Tallinn/CMSSW_10_5_0_pre1/src/L1TauAnalyzer/L1PFTauAnalyzer/script/efficiencyPlot/plots/"
         self.plotDir = ""
         self.xRange = (10, 300)
-        self.xTitle = "p_{T}^{#tau, offline} [GeV]"
+        #self.xTitle = "p_{T}^{#tau, offline} [GeV]"
+        self.xTitle = "p_{T}^{#tau, gen} [GeV]"
         #self.xTitle = "Number of vertices"
         #self.xTitle = "#eta^{#tau, offline}"
         self.legendPosition = (0.1,0.2,0.85,0.6)
@@ -79,8 +80,8 @@ class EfficiencyPlot:
         extraTextBox.SetTextColor(ROOT.kBlack)
         extraTextBox.SetTextAlign(13)
 
-        #workingPointBox = ROOT.TLatex(0.65, 0.25, self.workingPoint)
-        workingPointBox = ROOT.TLatex(0.25, 0.25, self.workingPoint)
+        workingPointBox = ROOT.TLatex(0.6, 0.2, self.workingPoint)
+        #workingPointBox = ROOT.TLatex(0.25, 0.25, self.workingPoint)
         workingPointBox.SetNDC()
         workingPointBox.SetTextFont(42)
         workingPointBox.SetTextSize(extraTextSize)
@@ -113,7 +114,7 @@ class EfficiencyPlot:
             fit.SetLineColor(turnon.lineColor)
             fit.SetLineWidth(2)
             histo.Draw("p same")
-            fit.Draw("l same")
+            #fit.Draw("l same")
             legend.AddEntry(histo, turnon.legend, "pe")
             legend.Draw()
         workingPointBox.Draw()

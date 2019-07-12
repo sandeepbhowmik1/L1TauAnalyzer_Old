@@ -53,24 +53,24 @@ for ev in range (0, nentries):
     treeIn.GetEntry(ev)
     if (ev%10000 == 0) : print ev, "/", nentries
     bkgSubW[0] = 1. 
-    for i in range(0, treeIn.recoTauPt.size()):
-        if abs(treeIn.recoTauEta[i]) > 1.5:
+    for i in range(0, treeIn.recoGMTauPt.size()):
+        if abs(treeIn.recoGMTauEta[i]) > 2.4:
             continue
 
         for k in range(0, treeIn.l1PFTauPt.size()):
-            DeltaR = math.sqrt((treeIn.recoTauEta[i]-treeIn.l1PFTauEta[k])**2 + (treeIn.recoTauPhi[i]-treeIn.l1PFTauPhi[k])**2)
+            DeltaR = math.sqrt((treeIn.recoGMTauEta[i]-treeIn.l1PFTauEta[k])**2 + (treeIn.recoGMTauPhi[i]-treeIn.l1PFTauPhi[k])**2)
             if DeltaR < 0.5:
                 #if treeIn.l1PFTauPt[k] < 30:
                 #    continue
-                tauPt[0] = treeIn.recoTauPt[i]
-                tauEta[0] = treeIn.recoTauEta[i]
-                tauPhi[0] = treeIn.recoTauPhi[i]
+                tauPt[0] = treeIn.recoGMTauPt[i]
+                tauEta[0] = treeIn.recoGMTauEta[i]
+                tauPhi[0] = treeIn.recoGMTauPhi[i]
                 Nvtx[0] = treeIn.Nvtx
 
-                l1tVLooseIso[0] = 1 if treeIn.l1PFTauVLooseIso[k] else 0
-                l1tLooseIso[0] = 1 if treeIn.l1PFTauLooseIso[k] else 0
-                l1tMediumIso[0] = 1 if treeIn.l1PFTauMediumIso[k] else 0
-                l1tTightIso[0] = 1 if treeIn.l1PFTauTightIso[k] else 0
+                l1tVLooseIso[0] = 1 if treeIn.l1PFTauVLooseRelIso[k] else 0
+                l1tLooseIso[0] = 1 if treeIn.l1PFTauLooseRelIso[k] else 0
+                l1tMediumIso[0] = 1 if treeIn.l1PFTauMediumRelIso[k] else 0
+                l1tTightIso[0] = 1 if treeIn.l1PFTauTightRelIso[k] else 0
                 l1tPt[0] = treeIn.l1PFTauPt[k]
                 l1tEta[0] = treeIn.l1PFTauEta[k]
                 l1tPhi[0] = treeIn.l1PFTauPhi[k]

@@ -40,8 +40,8 @@ void rate_Calculation(TString fileName_In, TString treeName_In, TString fileName
   TTree* treeIn = (TTree*)fileIn.Get(treeName_In);
   TFile fileOut(fileName_Out, "RECREATE");
 
-  double targetRate_singleTau = 6.0 ; //kHz For target rate of 12 kHz gives 12/2=6 kHz for |eta|<1.4
-  double targetRate_DoubleoTau = 3.0 ; //kHz For target rate of 12 kHz gives 12/4=3 kHz for |eta|<1.4
+  double targetRate_singleTau = 50.0 ; 
+  double targetRate_DoubleoTau = 12.0 ; 
 
   char outfile[200];
   char outfilx[200];
@@ -66,8 +66,6 @@ void rate_Calculation(TString fileName_In, TString treeName_In, TString fileName
   vector<int>   *l1PFTauVLooseRelIso =  0;
   vector<float>   *l1PFTauZ =  0;
   Int_t          Denominator = 0;
-  vector<float>   *recoTauPt =  0;
-  vector<float>   *recoTauEta =  0;
 
   treeIn->SetBranchAddress("EventNumber", &EventNumber);
   treeIn->SetBranchAddress("RunNumber", &RunNumber);
@@ -83,8 +81,6 @@ void rate_Calculation(TString fileName_In, TString treeName_In, TString fileName
   treeIn->SetBranchAddress("l1PFTauLooseRelIso", &l1PFTauLooseRelIso);
   treeIn->SetBranchAddress("l1PFTauVLooseRelIso", &l1PFTauVLooseRelIso);
   treeIn->SetBranchAddress("l1PFTauZ", &l1PFTauZ);
-  treeIn->SetBranchAddress("recoTauPt", &recoTauPt);
-  treeIn->SetBranchAddress("recoTauEta", &recoTauEta);
 
   TH1F* hist_Single_l1PFTauPt_TightIso = new TH1F("Single_L1PFTau_Pt_TightIso","Single_L1PFTau_Pt_TightIso",1000,0.,250.);
   TH1F* hist_Single_l1PFTauPt_MediumIso = new TH1F("Single_L1PFTau_Pt_MediumIso","Single_L1PFTau_Pt_MediumIso",1000,0.,250.);
@@ -125,7 +121,7 @@ void rate_Calculation(TString fileName_In, TString treeName_In, TString fileName
 
       for(UInt_t iL1PFTau = 0 ; iL1PFTau < l1PFTauPt->size() ; ++iL1PFTau)
 	{
-	  if(fabs(l1PFTauEta->at(iL1PFTau))>1.4) continue;
+	  if(fabs(l1PFTauEta->at(iL1PFTau))>2.172) continue;
 	  if (l1PFTauPt->at(iL1PFTau) <= 0) continue;
 
 	  if (l1PFTauTightRelIso->at(iL1PFTau)==1){
@@ -165,12 +161,12 @@ void rate_Calculation(TString fileName_In, TString treeName_In, TString fileName
       bool dzPass_VLooseIso=false;
 
       for(UInt_t iL1PFTau = 0 ; iL1PFTau < l1PFTauPt->size() ; ++iL1PFTau){
-	if(fabs(l1PFTauEta->at(iL1PFTau))>1.4) continue;
+	if(fabs(l1PFTauEta->at(iL1PFTau))>2.172) continue;
 	if (l1PFTauPt->at(iL1PFTau) <= 0) continue;
 
 	if (l1PFTauTightRelIso->at(iL1PFTau)==1 && !dzPass_TightIso){
 	  for(UInt_t kL1PFTau = iL1PFTau+1 ; kL1PFTau < l1PFTauPt->size() ; ++kL1PFTau){
-	    if(fabs(l1PFTauEta->at(kL1PFTau))>1.4) continue;
+	    if(fabs(l1PFTauEta->at(kL1PFTau))>2.172) continue;
 	    if (l1PFTauPt->at(kL1PFTau) <= 0) continue;
 
 	    if (l1PFTauTightRelIso->at(kL1PFTau)==1){
@@ -187,7 +183,7 @@ void rate_Calculation(TString fileName_In, TString treeName_In, TString fileName
 
 	if (l1PFTauMediumRelIso->at(iL1PFTau)==1 && !dzPass_MediumIso){
           for(UInt_t kL1PFTau = iL1PFTau+1 ; kL1PFTau < l1PFTauPt->size() ; ++kL1PFTau){
-            if(fabs(l1PFTauEta->at(kL1PFTau))>1.4) continue;
+            if(fabs(l1PFTauEta->at(kL1PFTau))>2.172) continue;
             if (l1PFTauPt->at(kL1PFTau) <= 0) continue;
 
             if (l1PFTauMediumRelIso->at(kL1PFTau)==1){
@@ -204,7 +200,7 @@ void rate_Calculation(TString fileName_In, TString treeName_In, TString fileName
 
 	if (l1PFTauLooseRelIso->at(iL1PFTau)==1 && !dzPass_LooseIso){
           for(UInt_t kL1PFTau = iL1PFTau+1 ; kL1PFTau < l1PFTauPt->size() ; ++kL1PFTau){
-            if(fabs(l1PFTauEta->at(kL1PFTau))>1.4) continue;
+            if(fabs(l1PFTauEta->at(kL1PFTau))>2.172) continue;
             if (l1PFTauPt->at(kL1PFTau) <= 0) continue;
 
             if (l1PFTauLooseRelIso->at(kL1PFTau)==1){
@@ -221,7 +217,7 @@ void rate_Calculation(TString fileName_In, TString treeName_In, TString fileName
 
 	if (l1PFTauVLooseRelIso->at(iL1PFTau)==1 && !dzPass_VLooseIso){
           for(UInt_t kL1PFTau = iL1PFTau+1 ; kL1PFTau < l1PFTauPt->size() ; ++kL1PFTau){
-            if(fabs(l1PFTauEta->at(kL1PFTau))>1.4) continue;
+            if(fabs(l1PFTauEta->at(kL1PFTau))>2.172) continue;
             if (l1PFTauPt->at(kL1PFTau) <= 0) continue;
 
             if (l1PFTauVLooseRelIso->at(kL1PFTau)==1){

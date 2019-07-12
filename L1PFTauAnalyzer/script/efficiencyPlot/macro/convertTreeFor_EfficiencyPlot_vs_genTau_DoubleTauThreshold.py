@@ -79,21 +79,21 @@ for ev in range (0, nentries):
     if (ev%10000 == 0) : print ev, "/", nentries
     bkgSubW[0] = 1. 
 
-    numRecoTau_PassingCut = 0
+    numGenTau_PassingCut = 0
     numL1PFTau_VLoose = 0
     numL1PFTau_Loose = 0
     numL1PFTau_Medium = 0
     numL1PFTau_Tight = 0
 
-    for i in range(0, treeIn.recoTauPt.size()):
-        if abs(treeIn.recoTauEta[i]) > 1.4:
+    for i in range(0, treeIn.genTauPt.size()):
+        if abs(treeIn.genTauEta[i]) > 2.4:
             continue
-        if abs(treeIn.recoTauPt[i]) < 30:
-            continue
+        #if abs(treeIn.genTauPt[i]) < 30:
+        #    continue
 
-        tauPt[0] = treeIn.recoTauPt[i]
-        tauEta[0] = treeIn.recoTauEta[i]
-        tauPhi[0] = treeIn.recoTauPhi[i]
+        tauPt[0] = treeIn.genTauPt[i]
+        tauEta[0] = treeIn.genTauEta[i]
+        tauPhi[0] = treeIn.genTauPhi[i]
         Nvtx[0] = treeIn.Nvtx
 
         l1tVLooseIso[0] = 0
@@ -106,7 +106,11 @@ for ev in range (0, nentries):
 
         l1PFTauPt = 0
         for k in range(0, treeIn.l1PFTauPt.size()):
-            DeltaR = math.sqrt((treeIn.recoTauEta[i]-treeIn.l1PFTauEta[k])**2 + (treeIn.recoTauPhi[i]-treeIn.l1PFTauPhi[k])**2)
+            if abs(treeIn.l1PFTauEta[k]) > 2.172:
+                continue
+            if abs(treeIn.l1PFTauZ[k] - treeIn.genVertex) > 0.4 :
+                continue
+            DeltaR = math.sqrt((treeIn.genTauEta[i]-treeIn.l1PFTauEta[k])**2 + (treeIn.genTauPhi[i]-treeIn.l1PFTauPhi[k])**2)
             if DeltaR < 0.5:
                 l1tVLooseIso[0] = 1 if treeIn.l1PFTauVLooseRelIso[k] and treeIn.l1PFTauPt[k] > (double)(pt_Threshold_VLooseIso) else 0
                 l1tLooseIso[0] = 1 if treeIn.l1PFTauLooseRelIso[k] and treeIn.l1PFTauPt[k] > (double)(pt_Threshold_LooseIso) else 0

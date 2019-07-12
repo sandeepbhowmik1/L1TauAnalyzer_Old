@@ -23,31 +23,33 @@ efficiency_L1PFTau = []
 plots = []
 
 varNameTags=["l1tVLooseIso", "l1tLooseIso", "l1tMediumIso", "l1tTightIso"]
+WorkingPoints=["Iso Charge < 0.40#times p_{T}^{#tau,L1}", "Iso Charge < 0.20#times p_{T}^{#tau,L1}", "Iso Charge < 0.10#times p_{T}^{#tau,L1}", "Iso Charge < 0.05#times p_{T}^{#tau,L1}"]
+plotRanges=[200, 1000]
 
-for varNameTag in varNameTags:
-
-    hist_TallinnL1PFTau.append(fileIn_TallinnL1PFTau.Get("histo_Phase2_L1PFTau_Pt_"+varNameTag))
-    hist_TallinnL1PFTau[-1].__class__ = ROOT.RooHist
-    hist_L1PFTau.append(fileIn_L1PFTau.Get("histo_Phase2_L1PFTau_Pt_"+varNameTag))
-    hist_L1PFTau[-1].__class__ = ROOT.RooHist
-    fit_TallinnL1PFTau.append(fileIn_TallinnL1PFTau.Get("fit_Phase2_L1PFTau_Pt_"+varNameTag))
-    fit_TallinnL1PFTau[-1].__class__ = ROOT.RooCurve
-    fit_L1PFTau.append(fileIn_L1PFTau.Get("fit_Phase2_L1PFTau_Pt_"+varNameTag))
-    fit_L1PFTau[-1].__class__ = ROOT.RooCurve
-    efficiency_TallinnL1PFTau.append(EfficiencyPlot.Efficiency(Name="TallinnL1PFTau", Histo=hist_TallinnL1PFTau[-1], Fit=fit_TallinnL1PFTau[-1],
-                                                               MarkerColor=ROOT.kBlue, MarkerStyle=20, LineColor=ROOT.kBlue,LineStyle=1,
-                                                               Legend="HPS@L1 (Tallinn) "))
-    efficiency_L1PFTau.append(EfficiencyPlot.Efficiency(Name="L1PFTau", Histo=hist_L1PFTau[-1], Fit=fit_L1PFTau[-1],
-                                                        MarkerColor=ROOT.kRed, MarkerStyle=20, LineColor=ROOT.kRed,LineStyle=1,
-                                                        Legend="L1PFTau "))
-    plots.append(EfficiencyPlot.EfficiencyPlot(WorkingPoint = varNameTag))
-    plots[-1].name = fileName_Out + "_" + varNameTag + "_100" 
-    plots[-1].xRange = (0,100)
-    plots[-1].extraText = "test"
-    #plots[-1].legendPosition = (0.65, 0.3, 0.85, 0.5)
-    plots[-1].legendPosition = (0.25, 0.3, 0.55, 0.5)
-    plots[-1].addEfficiency(efficiency_TallinnL1PFTau[-1])
-    plots[-1].addEfficiency(efficiency_L1PFTau[-1])
+for i in range (0, len(varNameTags)):
+    for k in range (0, len(plotRanges)):
+ 
+        hist_TallinnL1PFTau.append(fileIn_TallinnL1PFTau.Get("histo_Phase2_L1PFTau_Pt_"+varNameTags[i]))
+        hist_TallinnL1PFTau[-1].__class__ = ROOT.RooHist
+        hist_L1PFTau.append(fileIn_L1PFTau.Get("histo_Phase2_L1PFTau_Pt_"+varNameTags[i]))
+        hist_L1PFTau[-1].__class__ = ROOT.RooHist
+        fit_TallinnL1PFTau.append(fileIn_TallinnL1PFTau.Get("fit_Phase2_L1PFTau_Pt_"+varNameTags[i]))
+        fit_TallinnL1PFTau[-1].__class__ = ROOT.RooCurve
+        fit_L1PFTau.append(fileIn_L1PFTau.Get("fit_Phase2_L1PFTau_Pt_"+varNameTags[i]))
+        fit_L1PFTau[-1].__class__ = ROOT.RooCurve
+        efficiency_TallinnL1PFTau.append(EfficiencyPlot.Efficiency(Name="TallinnL1PFTau", Histo=hist_TallinnL1PFTau[-1], Fit=fit_TallinnL1PFTau[-1],
+                                                                   MarkerColor=ROOT.kBlue, MarkerStyle=20, LineColor=ROOT.kBlue,LineStyle=1,
+                                                                   Legend="HPS@L1 (Tallinn) "))
+        efficiency_L1PFTau.append(EfficiencyPlot.Efficiency(Name="L1PFTau", Histo=hist_L1PFTau[-1], Fit=fit_L1PFTau[-1],
+                                                            MarkerColor=ROOT.kRed, MarkerStyle=20, LineColor=ROOT.kRed,LineStyle=1,
+                                                            Legend="L1PFTau "))
+        plots.append(EfficiencyPlot.EfficiencyPlot(WorkingPoint = WorkingPoints[i]))
+        plots[-1].name = fileName_Out + "_" + varNameTags[i] + "_" + str(plotRanges[k])
+        plots[-1].xRange = (0, plotRanges[k])
+        plots[-1].extraText = "test"
+        plots[-1].legendPosition = (0.65, 0.25, 0.85, 0.4)
+        plots[-1].addEfficiency(efficiency_TallinnL1PFTau[-1])
+        plots[-1].addEfficiency(efficiency_L1PFTau[-1])
     
 canvas = []
 for plot in plots:
