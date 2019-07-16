@@ -93,6 +93,8 @@ do
 	    echo "process.load(\"L1TauAnalyzer.L1PFTauAnalyzer.${fileAnalTag[$i_fileAnal]}_cff\")" | cat >>$fileOut
 	    
 	    echo "process.${fileAnalTag[$i_fileAnal]}.histRootFileName = cms.string(\"hist_test_${fileAnalTag[$i_fileAnal]}_${fileListTag[$i_fileList]}_${tagNTuple}_part_${i_fileLine}.root\")" | cat >>$fileOut
+
+	    echo "process.${fileAnalTag[$i_fileAnal]}.bdtRootFileName = cms.string(\"bdt_test_${fileAnalTag[$i_fileAnal]}_${fileListTag[$i_fileList]}_${tagNTuple}_part_${i_fileLine}.root\")" | cat >>$fileOut
 	    
 	    echo "process.p = cms.Path(" | cat >>$fileOut
 	    printf "\t" test  | cat >>$fileOut

@@ -27,14 +27,7 @@ genVertexProducer = cms.EDProducer("GenVertexProducer",
 
 TallinnL1PFTauAnalyzer = cms.EDAnalyzer("TallinnL1PFTauAnalyzer",
                                         debug              = cms.untracked.bool(False),
-                                        treeName           = cms.string("TallinnL1PFTauAnalyzer"),
-                                        createHistRoorFile = cms.untracked.bool(True),
-                                        histRootFileName   = cms.string("hist_test_TallinnL1PFTauAnalyzer.root"),
-                                        #histRootFileName   = cms.string("hist_test_TallinnL1PFTauAnalyzer_VBFHToTauTau.root"),
-                                        #histRootFileName   = cms.string("hist_test_TallinnL1PFTauAnalyzer_NeutrinoGun.root"),
-                                        #l1PFTauToken       = cms.InputTag("TallinnL1PFTauProducer"),
-                                        #l1PFTauToken       = cms.InputTag("TallinnL1PFTauProducerPF"),
-                                        #l1PFTauToken       = cms.InputTag("TallinnL1PFTauProducerPuppi"), 
+                                        treeName           = cms.string("L1PFTauAnalyzer"),
                                         #l1PFTauToken       = cms.InputTag("TallinnL1PFTauProducerWithStripsAndPreselectionPF"),        # _1
                                         #l1PFTauToken       = cms.InputTag("TallinnL1PFTauProducerWithStripsAndPreselectionPuppi"),     # _2
                                         #l1PFTauToken       = cms.InputTag("TallinnL1PFTauProducerWithStripsWithoutPreselectionPF"),    # _3
@@ -44,15 +37,19 @@ TallinnL1PFTauAnalyzer = cms.EDAnalyzer("TallinnL1PFTauAnalyzer",
                                         #l1PFTauToken       = cms.InputTag("TallinnL1PFTauProducerWithoutStripsWithPreselectionPF"),    # _7
                                         #l1PFTauToken       = cms.InputTag("TallinnL1PFTauProducerWithoutStripsWithPreselectionPuppi"), # _8
                                         vtxTagToken        = cms.InputTag("offlineSlimmedPrimaryVertices"),
-                                        #pfTrackTagToken    = cms.InputTag("pfTracksFromL1Tracks"),
                                         l1TauToken         = cms.InputTag("caloStage2Digis", "Tau", "RECO"),
                                         genTagToken        = cms.InputTag("generator"),
                                         genTauToken        = cms.InputTag("tauGenJetsSelectorAllHadrons"),
-                                        #recoGMTauToken     = cms.InputTag("genMatchedTaus"),
                                         recoGMTauToken     = cms.InputTag("goodTaus"),
-                                        #recoTauToken       = cms.InputTag("goodTaus"),
                                         recoTauToken       = cms.InputTag("slimmedTaus"),
                                         genVertex          = cms.InputTag("genVertexProducer", "z0"),
+                                        fillBDT            = cms.untracked.bool(True),
+                                        bdtRootFileName    = cms.string("bdt_test_TallinnL1PFTauAnalyzer.root"),
+                                        treeBDTName        = cms.string("L1PFTauAnalyzer"),
+                                        createHistRoorFile = cms.untracked.bool(True),
+                                        histRootFileName   = cms.string("hist_test_TallinnL1PFTauAnalyzer.root"),
+                                        #histRootFileName   = cms.string("hist_test_TallinnL1PFTauAnalyzer_GluGluHToTauTau.root"),
+                                        #histRootFileName   = cms.string("hist_test_TallinnL1PFTauAnalyzer_NeutrinoGun.root"),
                                         )
 
 

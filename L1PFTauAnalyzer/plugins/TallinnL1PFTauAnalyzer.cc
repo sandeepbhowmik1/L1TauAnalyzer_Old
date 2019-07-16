@@ -74,8 +74,28 @@ private:
   std::vector<Bool_t> l1PFTauLooseRelIso_;
   std::vector<Bool_t> l1PFTauVLooseRelIso_;
   std::vector<float> l1PFTauZ_;
+
+  std::vector<float> l1PFTauLeadTrackPtOverTauPt_;
+  std::vector<float> l1PFTauChargedIso_;
+  std::vector<float> l1PFTauNeutralIso_;
+  std::vector<float> l1PFTauChargedIsoPileup_;
+  std::vector<float> l1PFTauRho_;
+  std::vector<float> l1PFTauNSignalChargedHadrons_;
+  std::vector<float> l1PFTauNSignalElectrons_;
+  std::vector<float> l1PFTauNSignalPhotons_;
+  std::vector<float> l1PFTauNSignalChargedPFCands_;
+  std::vector<float> l1PFTauSignalChargeSum_;
+  std::vector<float> l1PFTauStripPtOverTauPt_;
+  std::vector<float> l1PFTauStripMassOverTauPt_;
+  std::vector<float> l1PFTauStripMassOverStripPt_;
   double genVertex_;
   int Nvtx_;
+
+  bool fillBDT_;
+  TTree *treeBDT_;
+  std::string treeBDTName_;
+  std::string bdtRootFileName_;
+  TFile* bdtRootFile_;
 
   bool createHistRoorFile_;
   std::string histRootFileName_;
@@ -130,6 +150,12 @@ TallinnL1PFTauAnalyzer::TallinnL1PFTauAnalyzer(const edm::ParameterSet& iConfig)
   treeName_ = iConfig.getParameter<std::string>("treeName");
   edm::Service<TFileService> fs;
   tree_ = fs -> make<TTree>(treeName_.c_str(), treeName_.c_str());
+
+  fillBDT_         = iConfig.getUntrackedParameter<bool>("fillBDT", false);
+  bdtRootFileName_ = iConfig.getParameter<std::string>("bdtRootFileName");
+  bdtRootFile_ = new TFile(bdtRootFileName_.c_str(), "RECREATE");
+  treeBDTName_ = iConfig.getParameter<std::string>("treeBDTName");
+  treeBDT_ = new TTree(treeBDTName_.c_str(), treeBDTName_.c_str());
 
   createHistRoorFile_ = iConfig.getUntrackedParameter<bool>("createHistRoorFile", false);
   histRootFileName_ = iConfig.getParameter<std::string>("histRootFileName");
@@ -339,11 +365,44 @@ TallinnL1PFTauAnalyzer::analyze(const edm::Event& iEvent, const edm::EventSetup&
        }
 
      double z = 1000;
+     double leadTrackPt = 0;
      if ( l1PFTau.leadChargedPFCand().isNonnull() && l1PFTau.leadChargedPFCand()->pfTrack().isNonnull())
        {
          z = l1PFTau.leadChargedPFCand()->pfTrack()->vertex().z();
+	 leadTrackPt = l1PFTau.leadChargedPFCand()->pfTrack()->pt();
        }
      l1PFTauZ_.push_back(z);
+     l1PFTauLeadTrackPtOverTauPt_.push_back(leadTrackPt/l1PFTau.pt());
+     l1PFTauChargedIso_.push_back(l1PFTau.sumChargedIso());
+     l1PFTauNeutralIso_.push_back(l1PFTau.sumNeutralIso());
+     l1PFTauChargedIsoPileup_.push_back(l1PFTau.sumChargedIsoPileup());
+     l1PFTauRho_.push_back(l1PFTau.rhoCorr());
+     l1PFTauNSignalChargedHadrons_.push_back(l1PFTau.signalChargedHadrons().size());
+     l1PFTauNSignalElectrons_.push_back(l1PFTau.signalElectrons().size());
+     l1PFTauNSignalPhotons_.push_back(l1PFTau.signalPhotons().size());
+     int nSignalCan = l1PFTau.signalAllL1PFCandidates().size();
+     int NSignalChargedPFCands = 0;
+     int SumChargeSignalChargedPFCands = 0;
+     for (int i=0; i<nSignalCan; i++)
+       {
+	 if(l1PFTau.signalAllL1PFCandidates().at(i)->charge() != 0)
+	   {
+	     NSignalChargedPFCands++;
+	     SumChargeSignalChargedPFCands += l1PFTau.signalAllL1PFCandidates().at(i)->charge();
+	   }
+       }
+     l1PFTauNSignalChargedPFCands_.push_back(NSignalChargedPFCands);
+     l1PFTauSignalChargeSum_.push_back(abs(SumChargeSignalChargedPFCands));
+     l1PFTauStripPtOverTauPt_.push_back(l1PFTau.strip_p4().pt()/l1PFTau.pt());
+     l1PFTauStripMassOverTauPt_.push_back(l1PFTau.strip_p4().mass()/sqrt(l1PFTau.pt()));
+     if(l1PFTau.strip_p4().pt()!=0)
+       {
+	 l1PFTauStripMassOverStripPt_.push_back(l1PFTau.strip_p4().mass()/sqrt(l1PFTau.strip_p4().pt()));
+       }
+     else
+       {
+	 l1PFTauStripMassOverStripPt_.push_back(0);
+       }
 
      hist_l1PFTauPt_->Fill(l1PFTau.pt());
      hist_l1PFTauEta_->Fill(l1PFTau.eta());
@@ -356,6 +415,7 @@ TallinnL1PFTauAnalyzer::analyze(const edm::Event& iEvent, const edm::EventSetup&
    }
 
    tree_ -> Fill();
+   treeBDT_ -> Fill();
 }
 
 void TallinnL1PFTauAnalyzer::Initialize() {
@@ -394,6 +454,19 @@ void TallinnL1PFTauAnalyzer::Initialize() {
   l1PFTauMediumRelIso_ .clear();
   l1PFTauLooseRelIso_ .clear();
   l1PFTauVLooseRelIso_ .clear();
+  l1PFTauLeadTrackPtOverTauPt_ .clear();
+  l1PFTauChargedIso_ .clear();
+  l1PFTauNeutralIso_ .clear();
+  l1PFTauChargedIsoPileup_ .clear();
+  l1PFTauRho_ .clear();
+  l1PFTauNSignalChargedHadrons_ .clear();
+  l1PFTauNSignalElectrons_ .clear();
+  l1PFTauNSignalPhotons_ .clear();
+  l1PFTauNSignalChargedPFCands_ .clear();
+  l1PFTauSignalChargeSum_ .clear();
+  l1PFTauStripPtOverTauPt_ .clear();
+  l1PFTauStripMassOverTauPt_ .clear();
+  l1PFTauStripMassOverStripPt_ .clear();
   l1PFTauZ_ .clear();
   genVertex_ = 0;
   Nvtx_ = 0;
@@ -461,6 +534,26 @@ TallinnL1PFTauAnalyzer::beginJob()
   hist_l1PFTauReso_vs_Gen_ = new TH1F("l1PFTauReso_vs_Gen","l1PFTauReso_vs_Gen", 60, 0., 3.);
   hist_l1PFTauReso_vs_Reco_ = new TH1F("l1PFTauReso_vs_Reco","l1PFTauReso_vs_Reco", 60, 0., 3.);
   hist_l1PFTauReso_vs_RecoGM_ = new TH1F("l1PFTauReso_vs_RecoGM","l1PFTauReso_vs_RecoGM", 60, 0., 3.);
+
+  if(fillBDT_)
+    {
+      treeBDT_ -> Branch("l1PFTauPt",   &l1PFTauPt_);
+      treeBDT_ -> Branch("l1PFTauEta",  &l1PFTauEta_);
+      treeBDT_ -> Branch("l1PFTauLeadTrackPtOverTauPt",  &l1PFTauLeadTrackPtOverTauPt_ );
+      treeBDT_ -> Branch("l1PFTauChargedIso",  &l1PFTauChargedIso_ );
+      treeBDT_ -> Branch("l1PFTauNeutralIso",  &l1PFTauNeutralIso_ );
+      treeBDT_ -> Branch("l1PFTauChargedIsoPileup",  &l1PFTauChargedIsoPileup_ );
+      treeBDT_ -> Branch("l1PFTauRho",  &l1PFTauRho_ );
+      treeBDT_ -> Branch("l1PFTauNSignalChargedHadrons",  &l1PFTauNSignalChargedHadrons_ );
+      treeBDT_ -> Branch("l1PFTauNSignalElectrons",  &l1PFTauNSignalElectrons_ );
+      treeBDT_ -> Branch("l1PFTauNSignalPhotons",  &l1PFTauNSignalPhotons_ );
+      treeBDT_ -> Branch("l1PFTauNSignalChargedPFCands",  &l1PFTauNSignalChargedPFCands_ );
+      treeBDT_ -> Branch("l1PFTauSignalChargeSum",  &l1PFTauSignalChargeSum_ );
+      treeBDT_ -> Branch("l1PFTauStripPtOverTauPt",  &l1PFTauStripPtOverTauPt_ );
+      treeBDT_ -> Branch("l1PFTauStripMassOverTauPt",  &l1PFTauStripMassOverTauPt_ );
+      treeBDT_ -> Branch("l1PFTauStripMassOverStripPt",  &l1PFTauStripMassOverStripPt_ );
+    }
+
   return;
 }
 
@@ -468,6 +561,13 @@ TallinnL1PFTauAnalyzer::beginJob()
 void
 TallinnL1PFTauAnalyzer::endJob()
 {
+  if(fillBDT_)
+    {
+      bdtRootFile_->cd();
+      treeBDT_->SaveAs();
+      bdtRootFile_->Write();
+      bdtRootFile_->Close();
+    }
   if(createHistRoorFile_){
     histRootFile_->cd();
 
@@ -493,6 +593,8 @@ TallinnL1PFTauAnalyzer::endJob()
   //  histRootFile_->Write();
     histRootFile_->Close();
   }
+
+
   return;
 }
 

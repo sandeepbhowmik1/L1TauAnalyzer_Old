@@ -3,8 +3,8 @@ import os, subprocess, sys
 # ----------- *** Start Modification *** -------------------------------------
 
 tagCrab = '20190618'
-tagNTuple = '20190711_5'
-tagPlot = '20190712_5'
+tagNTuple = '20190716_5'
+tagPlot = '20190716_5'
 
 pathCrab_GluGluHToTauTau = '/cms/store/user/sbhowmik/GluGluHToTauTau_M125_14TeV_powheg_pythia8/GluGluHToTauTau_PhaseIIMTDTDRAutumn18MiniAOD_'+tagCrab+'/*/*'
 pathCrab_NeutrinoGun = '/cms/store/user/sbhowmik/NeutrinoGun_E_10GeV/PhaseIIMTDTDRAutumn18MiniAOD_'+tagCrab+'/*/*'
@@ -52,6 +52,10 @@ run_cmd('rm %s' % "NTuple_test_TallinnL1PFTauAnalyzer_GluGluHToTauTau_"+tagNTupl
 run_cmd('hadd %s %s' % ("NTuple_test_TallinnL1PFTauAnalyzer_GluGluHToTauTau_"+tagNTuple+".root", "NTuple_test_TallinnL1PFTauAnalyzer_GluGluHToTauTau_"+tagNTuple+"_part_*.root"))
 run_cmd('mv %s %s' % ("NTuple_test_TallinnL1PFTauAnalyzer_GluGluHToTauTau_"+tagNTuple+".root", pathNTuple_TallinnL1PFTau))
 
+run_cmd('rm %s' % "bdt_test_TallinnL1PFTauAnalyzer_GluGluHToTauTau_"+tagNTuple+".root")
+run_cmd('hadd %s %s' % ("bdt_test_TallinnL1PFTauAnalyzer_GluGluHToTauTau_"+tagNTuple+".root", "bdt_test_TallinnL1PFTauAnalyzer_GluGluHToTauTau_"+tagNTuple+"_part_*.root"))
+run_cmd('mv %s %s' % ("bdt_test_TallinnL1PFTauAnalyzer_GluGluHToTauTau_"+tagNTuple+".root", pathNTuple_TallinnL1PFTau))
+
 run_cmd('rm %s' % "NTuple_test_L1PFTauAnalyzer_GluGluHToTauTau_"+tagNTuple+".root")
 run_cmd('hadd %s %s' % ("NTuple_test_L1PFTauAnalyzer_GluGluHToTauTau_"+tagNTuple+".root", "NTuple_test_L1PFTauAnalyzer_GluGluHToTauTau_"+tagNTuple+"_part_*.root"))
 run_cmd('mv %s %s' % ("NTuple_test_L1PFTauAnalyzer_GluGluHToTauTau_"+tagNTuple+".root", pathNTuple_L1PFTau))
@@ -59,6 +63,10 @@ run_cmd('mv %s %s' % ("NTuple_test_L1PFTauAnalyzer_GluGluHToTauTau_"+tagNTuple+"
 run_cmd('rm %s' % "NTuple_test_TallinnL1PFTauAnalyzer_NeutrinoGun_"+tagNTuple+".root")
 run_cmd('hadd %s %s' % ("NTuple_test_TallinnL1PFTauAnalyzer_NeutrinoGun_"+tagNTuple+".root", "NTuple_test_TallinnL1PFTauAnalyzer_NeutrinoGun_"+tagNTuple+"_part_*.root"))
 run_cmd('mv %s %s' % ("NTuple_test_TallinnL1PFTauAnalyzer_NeutrinoGun_"+tagNTuple+".root", pathNTuple_TallinnL1PFTau))
+
+run_cmd('rm %s' % "bdt_test_TallinnL1PFTauAnalyzer_NeutrinoGun_"+tagNTuple+".root")
+run_cmd('hadd %s %s' % ("bdt_test_TallinnL1PFTauAnalyzer_NeutrinoGun_"+tagNTuple+".root", "bdt_test_TallinnL1PFTauAnalyzer_NeutrinoGun_"+tagNTuple+"_part_*.root"))
+run_cmd('mv %s %s' % ("bdt_test_TallinnL1PFTauAnalyzer_NeutrinoGun_"+tagNTuple+".root", pathNTuple_TallinnL1PFTau))
 
 run_cmd('rm %s' % "NTuple_test_L1PFTauAnalyzer_NeutrinoGun_"+tagNTuple+".root")
 run_cmd('hadd %s %s' % ("NTuple_test_L1PFTauAnalyzer_NeutrinoGun_"+tagNTuple+".root", "NTuple_test_L1PFTauAnalyzer_NeutrinoGun_"+tagNTuple+"_part_*.root"))
