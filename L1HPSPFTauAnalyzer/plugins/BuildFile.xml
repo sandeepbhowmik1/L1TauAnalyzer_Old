@@ -1,0 +1,21 @@
+<use name="FWCore/Framework"/>
+<use name="FWCore/PluginManager"/>
+<use name="FWCore/ParameterSet"/>
+<use name="FWCore/MessageLogger"/>
+<use name="JetMETCorrections/Modules"/>
+<use name="FWCore/Utilities"/>
+<use name="DataFormats/PatCandidates"/>
+<use name="DataFormats/L1Trigger"/>
+<use name="DataFormats/Phase2L1Taus"/>
+<use name="CommonTools/Utils"/>
+<use name="FWCore/ServiceRegistry"/>
+<use name="HLTrigger/HLTcore"/>
+<use name="CommonTools/UtilAlgos"/>
+<library file="*.cc" name="L1TauAnalyzerL1PFTauAnalyzerPlugins">
+ <use   name="L1TauAnalyzer/L1PFTauAnalyzer"/>
+ <use   name="hepmc"/>
+ <use   name="root"/>
+ <use   name="boost"/>
+ <flags   EDM_PLUGIN="1"/>
+</library>
+
