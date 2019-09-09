@@ -46,7 +46,7 @@ cd L1TauAnalyzer/L1HPSPFTauAnalyzer
 scram b -j 8
 
 
-# ------------- Checkout old cmssw version  ---------------------
+# ------------- Checkout old cmssw version  ----------------
 
 cmsrel CMSSW_10_5_0_pre1
 
@@ -66,16 +66,16 @@ git cms-addpkg L1Trigger/L1TCommon
 
 scram b -j 8
 
-# ------------- Add L1HPSTau package to old cmssw version  -------
+# ------ Add L1HPSTau package to old cmssw version  -------
 
 https://github.com/sandeepbhowmik1/L1HPSTaus/blob/master/README.md
 
 
-# ------------- To run the L1HPSTau Analyzer --------------------
+# -------- To run the L1HPSTau Analyzer ------------------
 
 cd L1TauAnalyzer/L1HPSPFTauAnalyzer/test
 
-# ------------- To make plots --------------------------------
+# ------------- To make plots --------------------------
 
 cd L1TauAnalyzer/L1HPSPFTauAnalyzer
 
