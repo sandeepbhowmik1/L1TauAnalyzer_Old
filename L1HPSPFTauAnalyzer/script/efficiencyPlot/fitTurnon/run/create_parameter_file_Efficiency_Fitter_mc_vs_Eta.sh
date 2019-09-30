@@ -14,7 +14,7 @@ scriptOut=$3
 
 varNameTag=(l1tVLooseIso l1tLooseIso l1tMediumIso l1tTightIso)
 
-#fileOut=parameter_${tauTag}_Efficiency_Fitter_mc_vs_Pt.par
+#fileOut=parameter_${tauTag}_Efficiency_Fitter_mc_vs_Eta.par
 fileOut=${scriptOut}
 
 echo "OutputFile: ${fileName_Out}" | cat >>$fileOut
@@ -30,13 +30,13 @@ do
     echo "Turnon.${i_var}.Name: Phase2_L1PFTau_${varNameTag[i_varName]}" | cat >>$fileOut
     echo "Turnon.${i_var}.File: ${fileName_In}" | cat >>$fileOut
     echo "Turnon.${i_var}.Tree: L1PFTauAnalyzer" | cat >>$fileOut
-    echo "Turnon.${i_var}.XVar: tauPt" | cat >>$fileOut
+    echo "Turnon.${i_var}.XVar: tauEta" | cat >>$fileOut
     echo "Turnon.${i_var}.Cut: ${varNameTag[i_varName]}" | cat >>$fileOut
     echo "Turnon.${i_var}.WeightVar: bkgSubW" | cat >>$fileOut
-    #echo "Turnon.${i_var}.Binning: 20 25 30 35 40 45 50 55 60 65 70 75 80 85 90 95 100 120 150 200 300 500 1000" | cat >>$fileOut
-    echo "Turnon.${i_var}.Binning: 20 25 30 35 40 45 50 55 60 65 70 75 80 85 90 95 100 120" | cat >>$fileOut
-    #echo "Turnon.${i_var}.FitRange:0 1000" | cat >>$fileOut
-    echo "Turnon.${i_var}.FitRange:0 120" | cat >>$fileOut
+    echo "Turnon.${i_var}.SelectionVars: tauPt" | cat >>$fileOut
+    echo "Turnon.${i_var}.Selection: tauPt>40" | cat >>$fileOut
+    echo "Turnon.${i_var}.Binning: -2.4 -2.172 -1.8 -1.5 -1.2 -0.9 -0.6 -0.3 0 0.3 0.6 0.9 1.2 1.5 1.8 2.172 2.4" | cat >>$fileOut
+    echo "Turnon.${i_var}.FitRange:-2.4 2.4" | cat >>$fileOut
     echo "Turnon.${i_var}.CB.Max: 1. 0.9 1." | cat >>$fileOut
     echo "Turnon.${i_var}.CB.Alpha: 3. 0.01 50." | cat >>$fileOut
     echo "Turnon.${i_var}.CB.N: 10. 1.001 100." | cat >>$fileOut

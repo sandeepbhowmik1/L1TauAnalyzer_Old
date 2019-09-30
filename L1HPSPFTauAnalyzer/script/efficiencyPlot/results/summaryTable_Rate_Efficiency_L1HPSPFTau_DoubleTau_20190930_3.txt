@@ -1,0 +1,11 @@
+\begin{table}[htbp] 
+\caption {L1PFTau} \label{tab:title } 
+\begin{tabular}{|l|l|c|c|c|}\hline 
+Working point & charged isolation & Rate [kHz] & L1 $\tau_{h}$ $p_T$ Threshold & Efficiency \\ 
+              &                   &            & GeV             & \%         \\ \hline 
+Very Loose & $<$ 0.40 $\times p_T$ & 11.988300 & 67.500000 , 67.500000 & 0.919311  \\ \hline 
+Loose & $<$ 0.20 $\times p_T$ & 11.988300 & 56.750000 , 56.750000 & 2.588125  \\ \hline 
+Medium & $<$ 0.10 $\times p_T$ & 11.871300 & 44.000000 , 44.000000 & 9.251669  \\ \hline 
+Tight & $<$ 0.05 $\times p_T$ & 11.871300 & 33.250000 , 33.250000 & 17.788968  \\ \hline 
+\end{tabular} 
+\end{table} 

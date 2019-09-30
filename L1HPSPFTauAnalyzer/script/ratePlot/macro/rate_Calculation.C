@@ -42,6 +42,9 @@ void rate_Calculation(TString fileName_In, TString treeName_In, TString fileName
 
   double targetRate_singleTau = 50.0 ; 
   double targetRate_DoubleoTau = 12.0 ; 
+  //double eta_max_L1Tau = 2.172;
+  double eta_max_L1Tau = 2.4;
+  double dzMax = 20.4;
 
   char outfile[200];
   char outfilx[200];
@@ -121,7 +124,7 @@ void rate_Calculation(TString fileName_In, TString treeName_In, TString fileName
 
       for(UInt_t iL1PFTau = 0 ; iL1PFTau < l1PFTauPt->size() ; ++iL1PFTau)
 	{
-	  if(fabs(l1PFTauEta->at(iL1PFTau))>2.172) continue;
+	  if(fabs(l1PFTauEta->at(iL1PFTau))>eta_max_L1Tau) continue;
 	  if (l1PFTauPt->at(iL1PFTau) <= 0) continue;
 
 	  if (l1PFTauTightRelIso->at(iL1PFTau)==1){
@@ -161,17 +164,17 @@ void rate_Calculation(TString fileName_In, TString treeName_In, TString fileName
       bool dzPass_VLooseIso=false;
 
       for(UInt_t iL1PFTau = 0 ; iL1PFTau < l1PFTauPt->size() ; ++iL1PFTau){
-	if(fabs(l1PFTauEta->at(iL1PFTau))>2.172) continue;
+	if(fabs(l1PFTauEta->at(iL1PFTau))>eta_max_L1Tau) continue;
 	if (l1PFTauPt->at(iL1PFTau) <= 0) continue;
 
 	if (l1PFTauTightRelIso->at(iL1PFTau)==1 && !dzPass_TightIso){
 	  for(UInt_t kL1PFTau = iL1PFTau+1 ; kL1PFTau < l1PFTauPt->size() ; ++kL1PFTau){
-	    if(fabs(l1PFTauEta->at(kL1PFTau))>2.172) continue;
+	    if(fabs(l1PFTauEta->at(kL1PFTau))>eta_max_L1Tau) continue;
 	    if (l1PFTauPt->at(kL1PFTau) <= 0) continue;
 
 	    if (l1PFTauTightRelIso->at(kL1PFTau)==1){
 	      double dz = TMath::Abs(l1PFTauZ->at(iL1PFTau) - l1PFTauZ->at(kL1PFTau));
-	      if(dz<0.4)
+	      if(dz<dzMax)
 		{
 		  hist_Double_l1PFTauPt_TightIso->Fill(l1PFTauPt->at(iL1PFTau), l1PFTauPt->at(kL1PFTau));
 		  dzPass_TightIso=true;
@@ -183,12 +186,12 @@ void rate_Calculation(TString fileName_In, TString treeName_In, TString fileName
 
 	if (l1PFTauMediumRelIso->at(iL1PFTau)==1 && !dzPass_MediumIso){
           for(UInt_t kL1PFTau = iL1PFTau+1 ; kL1PFTau < l1PFTauPt->size() ; ++kL1PFTau){
-            if(fabs(l1PFTauEta->at(kL1PFTau))>2.172) continue;
+            if(fabs(l1PFTauEta->at(kL1PFTau))>eta_max_L1Tau) continue;
             if (l1PFTauPt->at(kL1PFTau) <= 0) continue;
 
             if (l1PFTauMediumRelIso->at(kL1PFTau)==1){
               double dz = TMath::Abs(l1PFTauZ->at(iL1PFTau) - l1PFTauZ->at(kL1PFTau));
-              if(dz<0.4)
+              if(dz<dzMax)
                 {
                   hist_Double_l1PFTauPt_MediumIso->Fill(l1PFTauPt->at(iL1PFTau), l1PFTauPt->at(kL1PFTau));
                   dzPass_MediumIso=true;
@@ -200,12 +203,12 @@ void rate_Calculation(TString fileName_In, TString treeName_In, TString fileName
 
 	if (l1PFTauLooseRelIso->at(iL1PFTau)==1 && !dzPass_LooseIso){
           for(UInt_t kL1PFTau = iL1PFTau+1 ; kL1PFTau < l1PFTauPt->size() ; ++kL1PFTau){
-            if(fabs(l1PFTauEta->at(kL1PFTau))>2.172) continue;
+            if(fabs(l1PFTauEta->at(kL1PFTau))>eta_max_L1Tau) continue;
             if (l1PFTauPt->at(kL1PFTau) <= 0) continue;
 
             if (l1PFTauLooseRelIso->at(kL1PFTau)==1){
               double dz = TMath::Abs(l1PFTauZ->at(iL1PFTau) - l1PFTauZ->at(kL1PFTau));
-              if(dz<0.4)
+              if(dz<dzMax)
                 {
                   hist_Double_l1PFTauPt_LooseIso->Fill(l1PFTauPt->at(iL1PFTau), l1PFTauPt->at(kL1PFTau));
                   dzPass_LooseIso=true;
@@ -217,12 +220,12 @@ void rate_Calculation(TString fileName_In, TString treeName_In, TString fileName
 
 	if (l1PFTauVLooseRelIso->at(iL1PFTau)==1 && !dzPass_VLooseIso){
           for(UInt_t kL1PFTau = iL1PFTau+1 ; kL1PFTau < l1PFTauPt->size() ; ++kL1PFTau){
-            if(fabs(l1PFTauEta->at(kL1PFTau))>2.172) continue;
+            if(fabs(l1PFTauEta->at(kL1PFTau))>eta_max_L1Tau) continue;
             if (l1PFTauPt->at(kL1PFTau) <= 0) continue;
 
             if (l1PFTauVLooseRelIso->at(kL1PFTau)==1){
               double dz = TMath::Abs(l1PFTauZ->at(iL1PFTau) - l1PFTauZ->at(kL1PFTau));
-              if(dz<0.4)
+              if(dz<dzMax)
                 {
                   hist_Double_l1PFTauPt_VLooseIso->Fill(l1PFTauPt->at(iL1PFTau), l1PFTauPt->at(kL1PFTau));
                   dzPass_VLooseIso=true;

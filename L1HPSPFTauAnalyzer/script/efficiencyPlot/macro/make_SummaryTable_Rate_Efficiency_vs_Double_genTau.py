@@ -3,20 +3,20 @@ import numpy as n
 import math
 import sys
 
-#fileName_In = sys.argv[1]
-#treeName_In = sys.argv[2]
-#fileName_In_txt = sys.argv[3]
-#fileName_Out = sys.argv[4]
+fileName_In = sys.argv[1]
+treeName_In = sys.argv[2]
+fileName_In_txt = sys.argv[3]
+fileName_Out = sys.argv[4]
 
-fileName_In = "/home/sbhowmik/NTuple_Phase2/TallinnL1PFTau/NTuple_test_TallinnL1PFTauAnalyzer_VBFHToTauTau_20190625_5.root"
-treeName_In = "TallinnL1PFTauAnalyzer/TallinnL1PFTauAnalyzer"
-fileName_In_txt = "/home/sbhowmik/Phase2/Tallinn/CMSSW_10_5_0_pre1/src/L1TauAnalyzer/L1PFTauAnalyzer/script/ratePlot/results/hist_rate_TallinnL1PFTau_NeutrinoGun_20190626_5.txt"
-fileName_Out = "/home/sbhowmik/Phase2/Tallinn/CMSSW_10_5_0_pre1/src/L1TauAnalyzer/L1PFTauAnalyzer/script/efficiencyPlot/results/summaryTable_Rate_Efficiency_TallinnL1PFTau_20190626_5.txt"
+#fileName_In = "/home/sbhowmik/NTuple_Phase2/TallinnL1PFTau/NTuple_test_TallinnL1PFTauAnalyzer_VBFHToTauTau_20190610_5.root"
+#treeName_In = "TallinnL1PFTauAnalyzer/TallinnL1PFTauAnalyzer"
+#fileName_In_txt = "/home/sbhowmik/Phase2/Test/CMSSW_10_5_0_pre1/src/L1TauAnalyzer/L1PFTauAnalyzer/script/ratePlot/results/hist_rate_TallinnL1PFTau_NeutrinoGun_20190610_5.txt"
+#fileName_Out = "/home/sbhowmik/Phase2/Test/CMSSW_10_5_0_pre1/src/L1TauAnalyzer/L1PFTauAnalyzer/script/efficiencyPlot/results/summaryTable_Rate_Efficiency_TallinnL1PFTau_20190610_5.txt"
 
 #fileName_In = "/home/sbhowmik/NTuple_Phase2/L1PFTau/NTuple_test_L1PFTauAnalyzer_VBFHToTauTau_20190610_5.root"
 #treeName_In = "L1PFTauAnalyzer/L1PFTauAnalyzer"
-#fileName_In_txt = "/home/sbhowmik/Phase2/Tallinn/CMSSW_10_5_0_pre1/src/L1TauAnalyzer/L1PFTauAnalyzer/script/ratePlot/results/hist_rate_L1PFTau_NeutrinoGun_20190610_5.txt"
-#fileName_Out = "/home/sbhowmik/Phase2/Tallinn/CMSSW_10_5_0_pre1/src/L1TauAnalyzer/L1PFTauAnalyzer/script/efficiencyPlot/results/summaryTable_Rate_Efficiency_L1PFTau_20190610_5.txt"
+#fileName_In_txt = "/home/sbhowmik/Phase2/Test/CMSSW_10_5_0_pre1/src/L1TauAnalyzer/L1PFTauAnalyzer/script/ratePlot/results/hist_rate_L1PFTau_NeutrinoGun_20190610_5.txt"
+#fileName_Out = "/home/sbhowmik/Phase2/Test/CMSSW_10_5_0_pre1/src/L1TauAnalyzer/L1PFTauAnalyzer/script/efficiencyPlot/results/summaryTable_Rate_Efficiency_L1PFTau_20190610_5.txt"
 
 with open(fileName_In_txt,'r') as f:
     for line in f:
@@ -51,6 +51,9 @@ totalNum_L1PFTau_Loose_Pair = 0
 totalNum_L1PFTau_Medium_Pair = 0
 totalNum_L1PFTau_Tight_Pair = 0
 
+etaMax = 2.4
+#etaMax = 2.172
+
 nentries = treeIn.GetEntries()
 print "nentries ", nentries
 for ev in range (0, nentries):
@@ -63,19 +66,18 @@ for ev in range (0, nentries):
     numL1PFTau_Medium = 0
     numL1PFTau_Tight = 0
 
-    nbin = treeIn.l1PFTauPt.GetNBins()
-    print "nbin ", nbin
-
     for i in range(0, treeIn.genTauPt.size()):
-        if abs(treeIn.genTauEta[i]) > 2.4:
+        if abs(treeIn.genTauEta[i]) > double(etaMax):
             continue
-        if abs(treeIn.genTauPt[i]) < 30:
+        if abs(treeIn.genTauPt[i]) < 20:
             continue
 
         numGenTau_PassingCut +=1 
 
         for k in range(0, treeIn.l1PFTauPt.size()):
-            if abs(treeIn.l1PFTauEta[k]) > 2.172:
+            if abs(treeIn.l1PFTauEta[k]) > double(etaMax):
+                continue
+            if abs(treeIn.l1PFTauZ[k] - treeIn.genVertex) > 0.4 :
                 continue
             DeltaR = math.sqrt((treeIn.genTauEta[i]-treeIn.l1PFTauEta[k])**2 + (treeIn.genTauPhi[i]-treeIn.l1PFTauPhi[k])**2)
             if DeltaR < 0.5:

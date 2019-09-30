@@ -21,16 +21,16 @@ fileName_Out = sys.argv[4]
 with open(fileName_In_txt,'r') as f:
     for line in f:
         words = line.split()
-        if words[0]=='SingleTau' and words[1]=='VLooseIso' :
+        if words[0]=='DoubleTau' and words[1]=='VLooseIso' :
             rate_Target_VLooseIso = words[2]
             pt_Threshold_VLooseIso = words[4]
-        if words[0]=='SingleTau' and words[1]=='LooseIso' :
+        if words[0]=='DoubleTau' and words[1]=='LooseIso' :
             rate_Target_LooseIso = words[2]
             pt_Threshold_LooseIso = words[4]
-        if words[0]=='SingleTau' and words[1]=='MediumIso' :
+        if words[0]=='DoubleTau' and words[1]=='MediumIso' :
             rate_Target_MediumIso = words[2]
             pt_Threshold_MediumIso = words[4]
-        if words[0]=='SingleTau' and words[1]=='TightIso' :
+        if words[0]=='DoubleTau' and words[1]=='TightIso' :
             rate_Target_TightIso = words[2]
             pt_Threshold_TightIso = words[4]
 
@@ -72,24 +72,20 @@ treeOut.Branch("l1tMediumIso", l1tMediumIso, "l1tMediumIso/I")
 treeOut.Branch("l1tTightIso", l1tTightIso, "l1tTightIso/I")
 treeOut.Branch("Nvtx", Nvtx, "Nvtx/D")
 
+#etaMax = 2.4
+etaMax = 2.172
+
 nentries = treeIn.GetEntries()
 print "nentries ", nentries
 for ev in range (0, nentries):
     treeIn.GetEntry(ev)
     if (ev%10000 == 0) : print ev, "/", nentries
     bkgSubW[0] = 1. 
-
-    numGenTau_PassingCut = 0
-    numL1PFTau_VLoose = 0
-    numL1PFTau_Loose = 0
-    numL1PFTau_Medium = 0
-    numL1PFTau_Tight = 0
-
     for i in range(0, treeIn.genTauPt.size()):
-        if abs(treeIn.genTauEta[i]) > 2.4:
+        if abs(treeIn.genTauEta[i]) > double(etaMax):
             continue
-        #if abs(treeIn.genTauPt[i]) < 30:
-        #    continue
+        if abs(treeIn.genTauPt[i]) < 20:
+            continue
 
         tauPt[0] = treeIn.genTauPt[i]
         tauEta[0] = treeIn.genTauEta[i]
@@ -106,7 +102,7 @@ for ev in range (0, nentries):
 
         l1PFTauPt = 0
         for k in range(0, treeIn.l1PFTauPt.size()):
-            if abs(treeIn.l1PFTauEta[k]) > 2.172:
+            if abs(treeIn.l1PFTauEta[k]) > double(etaMax):
                 continue
             if abs(treeIn.l1PFTauZ[k] - treeIn.genVertex) > 0.4 :
                 continue

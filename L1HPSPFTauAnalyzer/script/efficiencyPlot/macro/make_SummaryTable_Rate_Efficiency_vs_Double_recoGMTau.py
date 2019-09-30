@@ -45,11 +45,14 @@ fileIn = TFile.Open(fileName_In)
 treeIn = fileIn.Get(treeName_In)
 fileOut = open(fileName_Out, "w+")
 
-totalNum_GenTau_Pair = 0
+totalNum_RecoTau_Pair = 0
 totalNum_L1PFTau_VLoose_Pair = 0
 totalNum_L1PFTau_Loose_Pair = 0
 totalNum_L1PFTau_Medium_Pair = 0
 totalNum_L1PFTau_Tight_Pair = 0
+
+etaMax = 2.4
+#etaMax = 2.172
 
 nentries = treeIn.GetEntries()
 print "nentries ", nentries
@@ -57,22 +60,26 @@ for ev in range (0, nentries):
     treeIn.GetEntry(ev)
     if (ev%10000 == 0) : print ev, "/", nentries
 
-    numGenTau_PassingCut = 0
+    numRecoTau_PassingCut = 0
     numL1PFTau_VLoose = 0
     numL1PFTau_Loose = 0
     numL1PFTau_Medium = 0
     numL1PFTau_Tight = 0
 
-    for i in range(0, treeIn.genTauPt.size()):
-        if abs(treeIn.genTauEta[i]) > 2.4:
+    for i in range(0, treeIn.recoGMTauPt.size()):
+        if abs(treeIn.recoGMTauEta[i]) > double(etaMax):
             continue
-        if abs(treeIn.genTauPt[i]) < 30:
+        if abs(treeIn.recoGMTauPt[i]) < 20:
             continue
 
-        numGenTau_PassingCut +=1 
+        numRecoTau_PassingCut +=1 
 
         for k in range(0, treeIn.l1PFTauPt.size()):
-            DeltaR = math.sqrt((treeIn.genTauEta[i]-treeIn.l1PFTauEta[k])**2 + (treeIn.genTauPhi[i]-treeIn.l1PFTauPhi[k])**2)
+            if abs(treeIn.l1PFTauEta[k]) > double(etaMax):
+                continue
+            if abs(treeIn.l1PFTauZ[k] - treeIn.genVertex) > 0.4 :
+                continue
+            DeltaR = math.sqrt((treeIn.recoGMTauEta[i]-treeIn.l1PFTauEta[k])**2 + (treeIn.recoGMTauPhi[i]-treeIn.l1PFTauPhi[k])**2)
             if DeltaR < 0.5:
                 if treeIn.l1PFTauVLooseRelIso[k] and treeIn.l1PFTauPt[k] > (double)(pt_Threshold_VLooseIso) :
                     numL1PFTau_VLoose +=1
@@ -84,8 +91,8 @@ for ev in range (0, nentries):
                     numL1PFTau_Tight +=1
                 break
 
-    if numGenTau_PassingCut >=2 :
-        totalNum_GenTau_Pair +=1
+    if numRecoTau_PassingCut >=2 :
+        totalNum_RecoTau_Pair +=1
     if numL1PFTau_VLoose >=2 :
         totalNum_L1PFTau_VLoose_Pair +=1
     if numL1PFTau_Loose >=2 :
@@ -94,12 +101,12 @@ for ev in range (0, nentries):
         totalNum_L1PFTau_Medium_Pair +=1
     if numL1PFTau_Tight >=2 :
         totalNum_L1PFTau_Tight_Pair +=1
-print "totalNum_GenTau_Pair ", totalNum_GenTau_Pair
+print "totalNum_RecoTau_Pair ", totalNum_RecoTau_Pair
 
-efficiency_L1PFTau_VLoose = (double)(totalNum_L1PFTau_VLoose_Pair)/(double)(totalNum_GenTau_Pair)*100
-efficiency_L1PFTau_Loose = (double)(totalNum_L1PFTau_Loose_Pair)/(double)(totalNum_GenTau_Pair)*100
-efficiency_L1PFTau_Medium = (double)(totalNum_L1PFTau_Medium_Pair)/(double)(totalNum_GenTau_Pair)*100
-efficiency_L1PFTau_Tight = (double)(totalNum_L1PFTau_Tight_Pair)/(double)(totalNum_GenTau_Pair)*100
+efficiency_L1PFTau_VLoose = (double)(totalNum_L1PFTau_VLoose_Pair)/(double)(totalNum_RecoTau_Pair)*100
+efficiency_L1PFTau_Loose = (double)(totalNum_L1PFTau_Loose_Pair)/(double)(totalNum_RecoTau_Pair)*100
+efficiency_L1PFTau_Medium = (double)(totalNum_L1PFTau_Medium_Pair)/(double)(totalNum_RecoTau_Pair)*100
+efficiency_L1PFTau_Tight = (double)(totalNum_L1PFTau_Tight_Pair)/(double)(totalNum_RecoTau_Pair)*100
 
 
 print "Very Loose ", efficiency_L1PFTau_VLoose

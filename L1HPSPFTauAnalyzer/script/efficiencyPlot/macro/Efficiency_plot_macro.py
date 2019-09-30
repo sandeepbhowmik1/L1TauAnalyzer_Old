@@ -26,7 +26,6 @@ class EfficiencyPlot:
     def __init__(self, **args):
         self.name  = ""
         self.turnons = []
-        #self.plotDir = "/home/sbhowmik/Phase2/Tallinn/CMSSW_10_5_0_pre1/src/L1TauAnalyzer/L1PFTauAnalyzer/script/efficiencyPlot/plots/"
         self.plotDir = ""
         self.xRange = (10, 300)
         #self.xTitle = "p_{T}^{#tau, offline} [GeV]"
@@ -35,8 +34,15 @@ class EfficiencyPlot:
         #self.xTitle = "#eta^{#tau, offline}"
         self.legendPosition = (0.1,0.2,0.85,0.6)
         self.setPlotStyle()
-        self.workingPoint = args.get("WorkingPoint", "")
-        self.extraText = "E_{T}^{#tau, L1} > 30 GeV"
+        #self.workingPoint = args.get("WorkingPoint", "")
+        self.xposText = 0.65
+        self.yposText = 0.60
+        self.extraText1 = "#tau_{h}#tau_{h} Trigger"
+        self.extraText2 = "HPS@L1"
+        self.extraText3 = "|#eta| < 2.172"
+        self.extraText4 = "Rate 12 kHz"
+        self.extraText5 = "True #tau_{h} p_{T} > 30 GeV"
+
 
     def addEfficiency(self, turnon):
         self.turnons.append(turnon)
@@ -46,61 +52,51 @@ class EfficiencyPlot:
         canvas.SetGrid()
         #canvas.SetLogx()
         hDummy = ROOT.TH1F("hDummy_"+self.name, self.name, 1, self.xRange[0], self.xRange[1])
-        hDummy.SetAxisRange(0, 1.05, "Y")
+        hDummy.SetAxisRange(0, 1.0, "Y")
         hDummy.SetXTitle(self.xTitle)
         #hDummy.SetYTitle("Test")
         hDummy.SetYTitle("Efficiency")
         hDummy.Draw()
 
-        cmsTextFont     = 42  # font of the "CMS" label
-        cmsTextSize   = 0.76*0.05  # font size of the "CMS" label
-        xpos  = 0.16
-        ypos  = 0.95
-        #CMSbox       = ROOT.TLatex  (xpos, ypos         , "#bf{CMS} #it{Preliminary}   2018 data")
-        #CMSbox       = ROOT.TLatex  (xpos, ypos         , "#bf{CMS}  L1PF Tau              MC (Phase2) ") 
-        CMSbox       = ROOT.TLatex  (xpos, ypos, "#bf{CMS} #it{Preliminary}      L1PF Tau      MC (Phase2) ")
+        xpos  = 0.11
+        ypos  = 0.91
+        cmsTextSize   = 0.03  
+        CMSbox       = ROOT.TLatex  (xpos, ypos, "#scale[1.5]{CMS} ")
+        CMSbox       = ROOT.TLatex  (xpos, ypos, "#scale[1.5]{CMS}           Phase-2 Simulation              PU=200            14 TeV")
         CMSbox.SetNDC()
         CMSbox.SetTextSize(cmsTextSize)
-        CMSbox.SetTextFont(cmsTextFont)
-        CMSbox.SetTextColor(ROOT.kBlack)
-        CMSbox.SetTextAlign(11)
 
-        extraTextFont   = 52 
-        extraTextSize   = 0.75*cmsTextSize                                    
-        #extraTextBox = ROOT.TLatex  (0.65, 0.33, "p_{T}^{#tau, offline} > 45 GeV")
-        #extraTextBox = ROOT.TLatex  (0.55, 0.33, "Inclusive, E_{T}^{#tau, L1} > 38 GeV")
-        #extraTextBox = ROOT.TLatex  (0.55, 0.33, "Isolated, E_{T}^{#tau, L1} > 30 GeV")
-        #extraTextBox = ROOT.TLatex  (0.55, 0.33, "#splitline{p_{T}^{#tau, offline} > 40 GeV}{Inclusive, E_{T}^{#tau, L1} > 38 GeV}")
-        #extraTextBox = ROOT.TLatex  (0.55, 0.33, "#splitline{p_{T}^{#tau, offline} > 40 GeV}{Isolated, E_{T}^{#tau, L1} > 38 GeV}")
-        extraTextBox = ROOT.TLatex  (0.65, 0.3, "E_{T}^{#tau, L1} > 30 GeV") 
-        extraTextBox = ROOT.TLatex  (0.65, 0.2, self.extraText)
-        extraTextBox.SetNDC()
-        extraTextBox.SetTextSize(extraTextSize)
-        extraTextBox.SetTextFont(extraTextFont)
-        extraTextBox.SetTextColor(ROOT.kBlack)
-        extraTextBox.SetTextAlign(13)
-
-        workingPointBox = ROOT.TLatex(0.6, 0.2, self.workingPoint)
-        #workingPointBox = ROOT.TLatex(0.25, 0.25, self.workingPoint)
-        workingPointBox.SetNDC()
-        workingPointBox.SetTextFont(42)
-        workingPointBox.SetTextSize(extraTextSize)
-        workingPointBox.SetTextColor(ROOT.kBlack)
-        workingPointBox.SetTextAlign(11)
-
-        lumi = "30.34 fb^{-1} (13 TeV)"
         lumi = "57 fb^{-1} (13 TeV)"
-
-        lumibox = ROOT.TLatex  (0.953, 0.95, lumi)
+        lumi = ""
+        lumibox = ROOT.TLatex  (0.7, 0.91, lumi)
         lumibox.SetNDC()
-        lumibox.SetTextAlign(31)
         lumibox.SetTextSize(cmsTextSize)
-        lumibox.SetTextFont(42)
-        lumibox.SetTextColor(ROOT.kBlack)
-        #Line legend
+
+        xposText = 0.65
+        yposText = 0.60
+        extraTextSize   = 0.035
+        extraTextBox1 = ROOT.TLatex  (self.xposText, self.yposText, self.extraText1)
+        extraTextBox1.SetNDC()
+        extraTextBox1.SetTextSize(extraTextSize)
+
+        extraTextBox2 = ROOT.TLatex  (self.xposText, self.yposText - 0.05, self.extraText2)
+        extraTextBox2.SetNDC()
+        extraTextBox2.SetTextSize(extraTextSize)
+
+        extraTextBox3 = ROOT.TLatex  (self.xposText, self.yposText - 0.10, self.extraText3)
+        extraTextBox3.SetNDC()
+        extraTextBox3.SetTextSize(extraTextSize)
+
+        extraTextBox4 = ROOT.TLatex  (self.xposText, self.yposText - 0.15, self.extraText4)
+        extraTextBox4.SetNDC()
+        extraTextBox4.SetTextSize(extraTextSize)
+
+        extraTextBox5 = ROOT.TLatex  (self.xposText, self.yposText - 0.20, self.extraText5)
+        extraTextBox5.SetNDC()
+        extraTextBox5.SetTextSize(extraTextSize)
+
         legend = ROOT.TLegend(self.legendPosition[0],self.legendPosition[1],self.legendPosition[2],self.legendPosition[3])
         legend.SetLineColor(0)
-        legend.SetTextFont(42)
         legend.SetFillColor(0)
 	legend.SetTextSize(extraTextSize)
 
@@ -112,49 +108,53 @@ class EfficiencyPlot:
             fit = turnon.fit
             fit.SetLineStyle(turnon.lineStyle)
             fit.SetLineColor(turnon.lineColor)
-            fit.SetLineWidth(2)
+            fit.SetLineWidth(3)
             histo.Draw("p same")
             #fit.Draw("l same")
-            legend.AddEntry(histo, turnon.legend, "pe")
+            legend.AddEntry(histo, turnon.legend, "lp")
             legend.Draw()
-        workingPointBox.Draw()
         CMSbox.Draw()
-        #extraTextBox.Draw()
-        #lumibox.Draw()
+        lumibox.Draw()
+        extraTextBox1.Draw()
+        extraTextBox2.Draw()
+        extraTextBox3.Draw()
+        extraTextBox4.Draw()
+        extraTextBox5.Draw()
+
         canvas.Print(self.name+".pdf", "pdf")
         canvas.Print(self.name+".png", "png")
         canvas.Print(self.name+".root", "root")
         return canvas
 
     def setPlotStyle(self):
-        ROOT.gROOT.SetStyle("Plain")
-        ROOT.gStyle.SetOptStat()
-        ROOT.gStyle.SetOptFit(0)
+        #ROOT.gROOT.SetStyle("Plain")
+        #ROOT.gStyle.SetOptStat()
+        #ROOT.gStyle.SetOptFit(0)
         ROOT.gStyle.SetOptTitle(0)
-        ROOT.gStyle.SetFrameLineWidth(1)
-        ROOT.gStyle.SetPadBottomMargin(0.13)
-        ROOT.gStyle.SetPadLeftMargin(0.16)
+        #ROOT.gStyle.SetFrameLineWidth(1)
+        #ROOT.gStyle.SetPadBottomMargin(0.13)
+        ROOT.gStyle.SetPadLeftMargin(0.11)
         #ROOT.gStyle.SetPadTopMargin(0.06)
         #ROOT.gStyle.SetPadRightMargin(0.05)
 
-        ROOT.gStyle.SetLabelFont(42,"X")
-        ROOT.gStyle.SetLabelFont(42,"Y")
-        ROOT.gStyle.SetLabelSize(0.04,"X")
-        ROOT.gStyle.SetLabelSize(0.04,"Y")
-        ROOT.gStyle.SetLabelOffset(0.01,"Y")
-        ROOT.gStyle.SetTickLength(0.02,"X")
-        ROOT.gStyle.SetTickLength(0.02,"Y")
-        ROOT.gStyle.SetLineWidth(1)
-        ROOT.gStyle.SetTickLength(0.02 ,"Z")
+        #ROOT.gStyle.SetLabelFont(42,"X")
+        #ROOT.gStyle.SetLabelFont(42,"Y")
+        #ROOT.gStyle.SetLabelSize(0.04,"X")
+        #ROOT.gStyle.SetLabelSize(0.04,"Y")
+        #ROOT.gStyle.SetLabelOffset(0.01,"Y")
+        #ROOT.gStyle.SetTickLength(0.02,"X")
+        #ROOT.gStyle.SetTickLength(0.02,"Y")
+        #ROOT.gStyle.SetLineWidth(1)
+        #ROOT.gStyle.SetTickLength(0.02 ,"Z")
 
-        ROOT.gStyle.SetTitleSize(0.1)
-        ROOT.gStyle.SetTitleFont(42,"X")
-        ROOT.gStyle.SetTitleFont(42,"Y")
-        ROOT.gStyle.SetTitleSize(0.05,"X")
-        ROOT.gStyle.SetTitleSize(0.05,"Y")
-        ROOT.gStyle.SetTitleOffset(1.1,"X")
+        ROOT.gStyle.SetTitleSize(0.04)
+        #ROOT.gStyle.SetTitleFont(42,"X")
+        #ROOT.gStyle.SetTitleFont(42,"Y")
+        #ROOT.gStyle.SetTitleSize(0.05,"X")
+        #ROOT.gStyle.SetTitleSize(0.05,"Y")
+        ROOT.gStyle.SetTitleOffset(1.2,"X")
         ROOT.gStyle.SetTitleOffset(1.4,"Y")
-        ROOT.gStyle.SetOptStat(0)
-        ROOT.gStyle.SetPalette(1)
-        ROOT.gStyle.SetPaintTextFormat("3.2f")
-        ROOT.gROOT.ForceStyle()
+        ROOT.gStyle.SetOptStat(000000)
+        #ROOT.gStyle.SetPalette(1)
+        #ROOT.gStyle.SetPaintTextFormat("3.2f")
+        #ROOT.gROOT.ForceStyle()
