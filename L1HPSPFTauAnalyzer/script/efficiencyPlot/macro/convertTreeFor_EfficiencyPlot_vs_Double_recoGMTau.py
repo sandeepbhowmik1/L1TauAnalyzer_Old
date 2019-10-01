@@ -72,8 +72,8 @@ treeOut.Branch("l1tMediumIso", l1tMediumIso, "l1tMediumIso/I")
 treeOut.Branch("l1tTightIso", l1tTightIso, "l1tTightIso/I")
 treeOut.Branch("Nvtx", Nvtx, "Nvtx/D")
 
-etaMax = 2.4
-#etaMax = 2.172
+#etaMax = 2.4
+etaMax = 2.172
 
 nentries = treeIn.GetEntries()
 print "nentries ", nentries

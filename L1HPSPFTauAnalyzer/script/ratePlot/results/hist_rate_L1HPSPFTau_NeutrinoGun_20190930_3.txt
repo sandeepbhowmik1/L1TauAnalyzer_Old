@@ -1,0 +1,8 @@
+DoubleTau TightIso 11.8713 kHz 24 GeV 
+DoubleTau MediumIso 11.5789 kHz 33.75 GeV 
+DoubleTau LooseIso 11.8129 kHz 49.5 GeV 
+DoubleTau VLooseIso 11.9298 kHz 61 GeV 
+SingleTau TightIso 49.8246 kHz 73 GeV 
+SingleTau MediumIso 49.3567 kHz 80.75 GeV 
+SingleTau LooseIso 49.883 kHz 86.75 GeV 
+SingleTau VLooseIso 49.5322 kHz 89.75 GeV 

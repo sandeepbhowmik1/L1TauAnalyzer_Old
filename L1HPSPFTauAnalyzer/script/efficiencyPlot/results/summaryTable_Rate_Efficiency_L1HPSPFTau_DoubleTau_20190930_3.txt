@@ -3,9 +3,9 @@
 \begin{tabular}{|l|l|c|c|c|}\hline 
 Working point & charged isolation & Rate [kHz] & L1 $\tau_{h}$ $p_T$ Threshold & Efficiency \\ 
               &                   &            & GeV             & \%         \\ \hline 
-Very Loose & $<$ 0.40 $\times p_T$ & 11.988300 & 67.500000 , 67.500000 & 0.919311  \\ \hline 
-Loose & $<$ 0.20 $\times p_T$ & 11.988300 & 56.750000 , 56.750000 & 2.588125  \\ \hline 
-Medium & $<$ 0.10 $\times p_T$ & 11.871300 & 44.000000 , 44.000000 & 9.251669  \\ \hline 
-Tight & $<$ 0.05 $\times p_T$ & 11.871300 & 33.250000 , 33.250000 & 17.788968  \\ \hline 
+Very Loose & $<$ 0.40 $\times p_T$ & 11.929800 & 61.000000 , 61.000000 & 1.751572  \\ \hline 
+Loose & $<$ 0.20 $\times p_T$ & 11.812900 & 49.500000 , 49.500000 & 5.767997  \\ \hline 
+Medium & $<$ 0.10 $\times p_T$ & 11.578900 & 33.750000 , 33.750000 & 21.166431  \\ \hline 
+Tight & $<$ 0.05 $\times p_T$ & 11.871300 & 24.000000 , 24.000000 & 29.892211  \\ \hline 
 \end{tabular} 
 \end{table} 

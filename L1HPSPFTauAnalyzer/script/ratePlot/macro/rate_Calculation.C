@@ -42,9 +42,9 @@ void rate_Calculation(TString fileName_In, TString treeName_In, TString fileName
 
   double targetRate_singleTau = 50.0 ; 
   double targetRate_DoubleoTau = 12.0 ; 
-  //double eta_max_L1Tau = 2.172;
-  double eta_max_L1Tau = 2.4;
-  double dzMax = 20.4;
+  double eta_max_L1Tau = 2.172;
+  //double eta_max_L1Tau = 2.4;
+  double dzMax = 0.4;
 
   char outfile[200];
   char outfilx[200];

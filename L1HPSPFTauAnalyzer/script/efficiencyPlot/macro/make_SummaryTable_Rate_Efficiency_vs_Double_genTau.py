@@ -51,8 +51,8 @@ totalNum_L1PFTau_Loose_Pair = 0
 totalNum_L1PFTau_Medium_Pair = 0
 totalNum_L1PFTau_Tight_Pair = 0
 
-etaMax = 2.4
-#etaMax = 2.172
+#etaMax = 2.4
+etaMax = 2.172
 
 nentries = treeIn.GetEntries()
 print "nentries ", nentries
