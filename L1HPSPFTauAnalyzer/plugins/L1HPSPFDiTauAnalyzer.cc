@@ -23,7 +23,7 @@
 #include "DataFormats/L1Trigger/interface/Tau.h" 
 #include "SimDataFormats/GeneratorProducts/interface/GenEventInfoProduct.h"
 #include <DataFormats/PatCandidates/interface/Tau.h> 
-#include "L1TauAnalyzer/L1PFTauAnalyzer/plugins/GenVertexProducer.h"
+#include "L1TauAnalyzer/L1HPSPFTauAnalyzer/plugins/GenVertexProducer.h"
 
 
 class L1HPSPFDiTauAnalyzer : public edm::one::EDAnalyzer<edm::one::SharedResources>  {
